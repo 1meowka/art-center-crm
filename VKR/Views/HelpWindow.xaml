@@ -1,0 +1,1028 @@
+<Window x:Class="VKR.Views.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Справка — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <!-- Стиль карточки (повторяем стиль главного окна) -->
+        <Style x:Key="HelpCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="28"/>
+            <Setter Property="Padding" Value="28"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="32" 
+                                      ShadowDepth="12" Opacity="0.05"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HelpButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="16"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}" 
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" 
+                           Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11" 
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Справка" FontSize="22" 
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" 
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="← Назад" Style="{StaticResource HelpButtonStyle}"
+                            Margin="4,0" Click="BackButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Контент: 3 карточки или содержимое раздела -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="28">
+
+                <!-- Стартовый экран: 3 карточки -->
+                <StackPanel x:Name="MenuPanel">
+                    <TextBlock Text="Чем мы можем помочь?"
+                               FontSize="32" FontWeight="ExtraBold"
+                               Foreground="{DynamicResource ThemeTextBrush}"/>
+                    <TextBlock Text="Выберите интересующий вас раздел"
+                               FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+                               Margin="0,4,0,28"/>
+
+                    <UniformGrid Columns="2" Rows="2">
+
+                        <!-- О программе -->
+                        <Border Style="{StaticResource HelpCardStyle}" 
+                                Margin="0,0,8,8" MouseLeftButtonUp="AboutProgram_Click">
+                            <StackPanel>
+                                <Border Width="60" Height="60" CornerRadius="20"
+                                        Background="{DynamicResource ThemeInfoBgBrush}" 
+                                        HorizontalAlignment="Left" Margin="0,0,0,16">
+                                    <TextBlock Text="📋" FontSize="28"
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="О программе" FontSize="20" 
+                                           FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Назначение, возможности, версия и технологии разработки информационной системы." 
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+                                           TextWrapping="Wrap" Margin="0,8,0,16"/>
+                                <TextBlock Text="Открыть →" Foreground="{DynamicResource ThemeSelectedRowTextBrush}" 
+                                           FontWeight="Black" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Руководство пользователя -->
+                        <Border Style="{StaticResource HelpCardStyle}" 
+                                Margin="8,0,0,8" MouseLeftButtonUp="UserGuide_Click">
+                            <StackPanel>
+                                <Border Width="60" Height="60" CornerRadius="20"
+                                        Background="{DynamicResource ThemeSuccessBgBrush}" 
+                                        HorizontalAlignment="Left" Margin="0,0,0,16">
+                                    <TextBlock Text="📖" FontSize="28"
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Руководство пользователя" FontSize="20" 
+                                           FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Пошаговые инструкции по всем разделам системы: заявки, финансы, KPI, MAX-бот и др." 
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+                                           TextWrapping="Wrap" Margin="0,8,0,16"/>
+                                <TextBlock Text="Открыть →" Foreground="{DynamicResource ThemeSuccessFgBrush}" 
+                                           FontWeight="Black" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Роли и доступ -->
+                        <Border Style="{StaticResource HelpCardStyle}" 
+                                Margin="0,8,8,0" MouseLeftButtonUp="RolesAccess_Click">
+                            <StackPanel>
+                                <Border Width="60" Height="60" CornerRadius="20"
+                                        Background="{DynamicResource ThemeWarningBgBrush}" 
+                                        HorizontalAlignment="Left" Margin="0,0,0,16">
+                                    <TextBlock Text="🔐" FontSize="28"
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Роли и доступ" FontSize="20" 
+                                           FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Кто что видит в системе, права на удаление, финансы и настройки безопасности." 
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+                                           TextWrapping="Wrap" Margin="0,8,0,16"/>
+                                <TextBlock Text="Открыть →" Foreground="{DynamicResource ThemeWarningFgBrush}" 
+                                           FontWeight="Black" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+
+                    </UniformGrid>
+                </StackPanel>
+
+                <!-- Раздел "О программе" -->
+                <Border x:Name="AboutProgramPanel" Visibility="Collapsed"
+                        Style="{StaticResource HelpCardStyle}" Padding="36">
+                    <StackPanel>
+                        <Button Content="← К списку разделов" 
+                                Style="{StaticResource HelpButtonStyle}"
+                                HorizontalAlignment="Left" Margin="0,0,0,20"
+                                Click="ToMenu_Click"/>
+                        <TextBlock Text="📋 О программе" FontSize="28" 
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="Информационная система «Арт-студия»" 
+                                   FontSize="15" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+                                   Margin="0,4,0,24"/>
+
+                        <TextBlock Text="Назначение" FontSize="16" FontWeight="ExtraBold" 
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,8"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13" 
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" LineHeight="22" Margin="0,0,0,20">
+                            Информационная система предназначена для автоматизации детского творческого центра. Система обеспечивает централизованное хранение и обработку информации об обучающихся, представителях, преподавателях, договорах, платежах, задолженностях и расписании занятий.
+                        </TextBlock>
+
+                        <TextBlock Text="Основные возможности" FontSize="16" FontWeight="ExtraBold" 
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,8"/>
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="• Учёт заявок, конвертация в обучающихся" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• База обучающихся, представителей, групп и расписания" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Договоры, оплаты, задолженности, продажи и расходы" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Посещаемость и расчёт зарплаты преподавателей" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Планы KPI и сравнение план/факт за период" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Сводный отчёт в Excel: источники прихода, группы по направлениям, лагерь" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Справочники (12 типов) с полным CRUD" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Чат-бот MAX: автоответы, рассылки, переписка с клиентами" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Разграничение прав по ролям, защита паролей и сессий" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Экспорт расписания и отчётов (Word, Excel)" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Технологии разработки" FontSize="16" FontWeight="ExtraBold" 
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,8"/>
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="• Платформа: .NET 8 + WPF (Windows)" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• СУБД: PostgreSQL" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Интеграция: MAX Bot API (мессенджер)" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Безопасность: BCrypt-пароли, DPAPI для токена бота, авто-выход при простое" FontSize="13" 
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,4"/>
+                        </StackPanel>
+
+                        <Border Background="{DynamicResource ThemeBgBrush}" CornerRadius="14" Padding="16">
+                            <TextBlock FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}">
+                                Версия: 2.0
+                            </TextBlock>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Раздел "Роли и доступ" -->
+                <Border x:Name="RolesAccessPanel" Visibility="Collapsed"
+                        Style="{StaticResource HelpCardStyle}" Padding="36">
+                    <StackPanel>
+                        <Button Content="← К списку разделов"
+                                Style="{StaticResource HelpButtonStyle}"
+                                HorizontalAlignment="Left" Margin="0,0,0,20"
+                                Click="ToMenu_Click"/>
+                        <TextBlock Text="🔐 Роли и доступ" FontSize="28"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="Кто что может делать в системе"
+                                   FontSize="15" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                   Margin="0,4,0,24"/>
+
+                        <TextBlock Text="Роли пользователей" FontSize="16" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,12"/>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Администратор" FontWeight="Bold" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Полный доступ ко всем разделам, справочникам, настройкам MAX-бота и управлению учётными записями. Может удалять записи.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Директор" FontWeight="Bold" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Как администратор, кроме управления пользователями и настроек бота. Может удалять финансовые и плановые записи.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Старший менеджер" FontWeight="Bold" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Как менеджер, плюс сводка продаж на главной и полный набор Excel-отчётов (операционный, финансы, учебный год, география). Справочники недоступны. Экран ИИ-аналитики отключён до интеграции данных.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Менеджер" FontWeight="Bold" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Заявки, обучающиеся, группы, преподаватели, договоры, оплаты, продажи, расходы, MAX-бот. Главная сводка продаж скрыта. Excel: операционный отчёт и география. KPI-экран и ИИ-аналитика недоступны до интеграции данных. Справочники недоступны. Удаление записей — нет.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Преподаватель" FontWeight="Bold" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Только обучающиеся, группы (просмотр расписания), преподаватели (своё расписание, посещаемость). Финансы, KPI, аналитика и справочники скрыты. Зарплата — только у руководства.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Безопасность" FontSize="16" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,12"/>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• Пароль: минимум 8 символов, буквы и цифры." FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• После 5 неудачных попыток входа — блокировка на 15 минут." FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• При бездействии 30 минут — автоматический выход из системы." FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Токен MAX-бота хранится в БД в зашифрованном виде (Windows DPAPI)." FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Удаление записей (оплаты, договоры, планы KPI и др.) — только администратор и директор." FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="UserGuidePanel" Visibility="Collapsed"
+                        Style="{StaticResource HelpCardStyle}" Padding="36">
+                    <StackPanel>
+                        <Button Content="← К списку разделов"
+                                Style="{StaticResource HelpButtonStyle}"
+                                HorizontalAlignment="Left" Margin="0,0,0,20"
+                                Click="ToMenu_Click"/>
+                        <TextBlock Text="📖 Руководство пользователя" FontSize="28"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="ИИС «Арт-студия 2.0» — порядок работы с системой"
+                                   FontSize="15" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                   Margin="0,4,0,24"/>
+
+                        <!-- ============================================================ -->
+                        <!-- 1. НАЗНАЧЕНИЕ СИСТЕМЫ                                        -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="1. Назначение системы" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,8">
+                            ИИС «Арт-студия 2.0» предназначена для автоматизации
+                            работы администратора учебного центра. Система поддерживает:
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• ведение клиентской базы (обучающиеся, представители, заявки);"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• заключение и сопровождение договоров;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• учёт оплат и задолженностей;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• управление группами, расписанием, преподавателями и посещаемостью;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• формирование плановых и фактических показателей KPI;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• интеллектуальную аналитику: прогноз оттока обучающихся и прогноз конверсии заявок;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• справочники, чат-бот MAX, планы KPI и управленческую панель на главной."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,24">
+                            Пользователи — администратор, директор, старший менеджер, менеджер и преподаватель. Набор доступных разделов зависит от роли (см. карточку «Роли и доступ»).
+                        </TextBlock>
+
+                        <!-- ============================================================ -->
+                        <!-- 2. УСЛОВИЯ ВЫПОЛНЕНИЯ ПРОГРАММЫ                              -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="2. Условия выполнения программы" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Для штатной работы программы требуется:
+                        </TextBlock>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Операционная система"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Windows 10 / 11 (x64)"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Платформа"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text=".NET 8 Desktop Runtime"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="СУБД"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="PostgreSQL 12 или выше с развёрнутой схемой art_studio"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Оперативная память"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="не менее 4 ГБ"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Свободное место на диске"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="не менее 200 МБ"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Разрешение экрана"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="не менее 1280×800 (рекомендуется 1920×1080)"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,24">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Сеть"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextSubtleBrush}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="TCP/IP-доступ к серверу PostgreSQL (по умолчанию порт 5432)"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- ============================================================ -->
+                        <!-- 3. ПОРЯДОК ЗАПУСКА ПРИЛОЖЕНИЯ                                -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="3. Порядок запуска приложения" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="1. Убедитесь, что сервер PostgreSQL запущен и доступен."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="2. Запустите исполняемый файл VKR.exe (двойной щелчок мышью)."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="3. В открывшемся окне авторизации введите логин и пароль учётной записи."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="4. Нажмите кнопку «ВОЙТИ В СИСТЕМУ»."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="5. При успешной авторизации открывается главное окно системы."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="6. Если данные введены неверно — система покажет сообщение об ошибке. После 5 неудачных попыток вход блокируется на 15 минут."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="7. Пароль должен содержать не менее 8 символов, включая буквы и цифры."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 4. ОПИСАНИЕ ГЛАВНОГО ОКНА                                    -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="4. Описание главного окна системы" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            После авторизации открывается главное окно системы, состоящее
+                            из следующих элементов:
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="• верхняя панель: логотип, имя пользователя, колокольчик уведомлений, профиль, кнопка «Выход»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• боковое меню: Главная, Заявки, Обучающиеся, Группы, Преподаватели, Договоры, Оплаты, Продажи, Расходы, Отчёты, KPI, Справочники, MAX-бот, Справка;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• главная страница (для руководства): сводка по выручке, заявкам и KPI за выбранный период;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• уведомления: дни рождения, просрочки оплат, окончание договоров;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• профиль: смена пароля; у администратора — переход к управлению пользователями;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• в каждом разделе кнопка «?» — краткая справка по текущему экрану."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 5. РАБОТА С ЗАЯВКАМИ                                         -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="5. Работа с заявками" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Карточки гостей» — единственный список людей. Кнопка «Добавить карточку гостя»
+                            создаёт карточку, ниже список прокручивается, двойной щелчок открывает все данные гостя.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• «Добавить карточку гостя» — ФИО, дата рождения, телефон, направления, откуда узнали о центре, примечание по ребёнку и примечание по договору. Статус по умолчанию — «новая»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Открыть карточку» — отображает подробные сведения о заявке, историю контактов и прогноз конверсии;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Конвертировать» — переводит заявку в обучающегося и предлагает создать договор. При этом статус заявки автоматически меняется на «конвертирована»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Отказ» — переводит заявку в статус «отказ» с указанием причины;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• фильтрация по статусу, направлению, источнику («откуда узнали о центре») и периоду создания."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,24">
+                            <StackPanel>
+                                <TextBlock Text="Статусы заявок" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,6"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    новая → подтверждена → посещено → конвертирована | отказ
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ============================================================ -->
+                        <!-- 6. РАБОТА С ОБУЧАЮЩИМИСЯ И ПРЕДСТАВИТЕЛЯМИ                   -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="6. Работа с обучающимися и представителями" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Отдельного раздела «Клиенты» нет. Люди ведутся в «Карточках гостей».
+                            После зачисления обучающийся попадает в договоры и группы.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• «Добавить обучающегося» — форма ввода личных данных и сведений о законном представителе;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Карточка обучающегося» — личные данные, представители, договоры, группы, посещаемость;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Представители» — в карточке обучающегося: добавление, редактирование, основной плательщик;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Перевод в группу» — зачисление или перевод между группами из карточки обучающегося;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Архивировать» — обучающийся не участвует в активной статистике, данные сохраняются."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 7. РАБОТА С ДОГОВОРАМИ                                       -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="7. Работа с договорами" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Договоры» используется для оформления и сопровождения
+                            договоров на оказание образовательных услуг.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="• «Создать договор» — договор заключается на обучающегося, в том числе на ребёнка. Родитель подтягивается из его карточки, администратор выбирает кого из. Направление, курс (6 и 9 месяцев и другие), цена и скидка. Сумма считается автоматически;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Открыть договор» — позволяет просматривать, редактировать поля и привязанные к договору оплаты, задолженности и расторжение;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Расторгнуть» — переводит договор в статус «расторгнут» с указанием причины и даты расторжения;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• фильтрация по статусу, направлению, периоду и обучающемуся."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 8. УЧЁТ ОПЛАТ И ЗАДОЛЖЕННОСТЕЙ                              -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="8. Учёт оплат и задолженностей" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Платежи» содержит две вкладки: «Оплаты» и
+                            «Задолженности». Оплаты и долги привязаны к договорам.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• «Принять оплату» — форма ввода суммы, даты, способа оплаты и услуги. После сохранения оплата прибавляется к выручке и пересчитываются связанные задолженности;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Создать задолженность» — фиксирует факт неоплаты с указанием суммы, даты возникновения и комментария;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Погасить задолженность» — частично или полностью погашает долг и автоматически обновляет статус;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• фильтрация по статусу долга, периоду, обучающемуся и договору."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,24">
+                            <StackPanel>
+                                <TextBlock Text="Статусы задолженностей" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,6"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    активна → частично_погашена → погашена; либо «списана»
+                                    при списании задолженности.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ============================================================ -->
+                        <!-- 9. РАБОТА С ГРУППАМИ И РАСПИСАНИЕМ                          -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="9. Работа с группами и расписанием" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Группы и расписание» отвечает за формирование
+                            учебных групп и составление расписания занятий.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="• Вкладка «Группы»: создайте группу (направление + преподаватель + номер). Состав группы в карточке группы — только просмотр;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Зачисление в группу — через карточку обучающегося → «Перевод в группу»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Вкладка «Расписание»: «Добавить занятие» — группа, день недели, время, кабинет. Нужны активная группа и кабинет из справочника;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Расписание: карточки по дням или список; навигация по неделям, печать в Word;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «График преподавателей» — сводная сетка занятости."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 10. РАБОТА С ПРЕПОДАВАТЕЛЯМИ И ПОСЕЩАЕМОСТЬЮ                -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="10. Работа с преподавателями и посещаемостью" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Преподаватели» содержит список штатных сотрудников
+                            учебного центра. Из карточки преподавателя доступно ведение
+                            посещаемости и расчёт заработной платы.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• «Добавить преподавателя» — личные данные, направления работы, ставка за занятие, дата приёма;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Посещаемость» — выбор даты занятия, отметка обучающихся статусами «присутствовал», «отсутствовал», «уважительная»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Зарплата» — расчёт суммы по фактическим отработанным занятиям за выбранный период;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• сводка процентов посещаемости по группе отображается в карточке обучающегося."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,24">
+                            Данные посещаемости сохраняются в таблицу attendance и
+                            автоматически попадают в показатели KPI и в расчёт оттока.
+                        </TextBlock>
+
+                        <!-- ============================================================ -->
+                        <!-- 11. ПРОДАЖИ И РАСХОДЫ                                       -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="11. Продажи и расходы" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Разделы «Продажи» и «Расходы» ведут учёт разовых операций центра
+                            (магазин, мероприятия, хозяйственные траты). Доступны администратору,
+                            директору и менеджеру.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="• «Продажи» — товар или услуга из справочника, количество, сумма, дата. Сводка по выручке за период;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Расходы» — категория из справочника, сумма, дата, комментарий. Итоги по статьям расходов;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Удаление записей — только администратор и директор."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 12. ОТЧЁТЫ                                                   -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="12. Отчёты и выгрузки" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Отчёты» формирует Excel-файлы по готовым шаблонам из данных базы.
+                            Доступен администратору, директору и менеджеру.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="• «ППО» — отчёт для бухгалтерии: лист «ДУ» (ежедневный приход по терминалу, QR, Сбер, наличным) и лист «расходы»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «ВП» — управленческий отчёт: ведомость продаж, договоры, пробные занятия, новички, дебиторка, ушедшие, планы и интенсивность;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• можно выбрать один день или произвольный период; файл сохраняется в выбранную папку;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• приход берётся из оплат по договорам и продаж магазина; расходы — из раздела «Расходы»."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 13. СПРАВОЧНИКИ                                              -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="13. Справочники" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «Справочники» — единое место для нормативно-справочной информации.
+                            Доступен администратору и директору. Для каждого справочника доступны
+                            добавление, редактирование и удаление записей.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• Направления — отдельный пункт меню слева, рядом с «Услуги / курсы». Кнопка «Добавить направление». Также можно добавить направление прямо из карточки курса;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Типы родства, типы обучающихся, источники заявок;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Способы оплаты, типы услуг, категории расходов, товары магазина;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Типы событий (перевод, приостановка и др.), роли пользователей."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,24">
+                            Перед добавлением занятий в расписание убедитесь, что в справочнике «Кабинеты»
+                            есть хотя бы одна запись. Код роли при редактировании не меняется.
+                        </TextBlock>
+
+                        <!-- ============================================================ -->
+                        <!-- 14. ПЛАНЫ И KPI                                              -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="14. Планы и KPI" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «KPI» позволяет задавать плановые показатели и сравнивать их
+                            с фактом за выбранный период.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock Text="• «Добавить план» — название, период, целевые значения: заявки, новые обучающиеся, договоры, выручка, посещаемость %, допустимый отток;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Выберите период (с даты / по дату) и нажмите «Применить»;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Выберите план в списке слева и нажмите «Рассчитать KPI» — карточки и таблица покажут план/факт, % выполнения и статус;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Без выбранного плана отображаются только фактические показатели за период."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+
+                        <!-- ============================================================ -->
+                        <!-- 14. ЧАТ-БОТ MAX                                              -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="15. Чат-бот MAX" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            Раздел «MAX-бот» — интеграция с мессенджером MAX для общения с клиентами.
+                            Доступен администратору, директору и менеджеру.
+                        </TextBlock>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Text="• «Настройки бота» (только администратор): токен, название организации, контакты. «Проверить» — тест API; «Сохранить» — запись в БД;"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Рассылка» — сервисные сообщения подписчикам по шаблонам (не рекламные массовые рассылки);"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• «Чат с клиентами» — ответы на сообщения; входящие обрабатывает фоновая служба MaxBotWorker (см. папку MaxBotWorker);"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <TextBlock Text="• Бот автоматически отвечает на /start, /help, /расписание, /контакты, /направления, /privacy, /stop."
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,24">
+                            Токен бота получают на business.max.ru после модерации. Хранится в системе в зашифрованном виде.
+                        </TextBlock>
+
+                        <!-- ============================================================ -->
+                        <!-- 16. СВОДНЫЙ ОТЧЁТ И АНАЛИТИКА НА ГЛАВНОЙ                      -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="16. Сводный отчёт и источники прихода" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,12">
+                            На главном экране отображается диаграмма «Источники прихода» —
+                            распределение заявок по источникам (СМС, MAX, мастер-класс и др.)
+                            за выбранный период. В разделе «Отчёты» карточка «Сводный отчёт»
+                            формирует один Excel-файл с несколькими листами.
+                        </TextBlock>
+
+                        <TextBlock Text="16.1. Лист «Источники»" FontSize="14" FontWeight="Bold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,6"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,16">
+                            Сводка по источникам прихода: количество заявок, конверсий,
+                            новых обучающихся, договоров и сумма договоров за период.
+                        </TextBlock>
+
+                        <TextBlock Text="16.2. Листы по направлениям" FontSize="14" FontWeight="Bold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,6"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,16">
+                            Для каждого направления (музыка, ИЗО и др.) — отдельный лист
+                            с группами: состав, контакты родителей, суммы по договору,
+                            оплаты по месяцам учебного года (август — май).
+                        </TextBlock>
+
+                        <TextBlock Text="16.3. Листы «Лагерь»" FontSize="14" FontWeight="Bold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,6"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13"
+                                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,24">
+                            Обучающиеся лагерных направлений сгруппированы по источнику
+                            прихода. Указываются контакты, смена, свидетельство о рождении,
+                            даты и комментарии.
+                        </TextBlock>
+
+                        <!-- ============================================================ -->
+                        <!-- 17. СООБЩЕНИЯ СИСТЕМЫ                                        -->
+                        <!-- ============================================================ -->
+                        <TextBlock Text="17. Возможные сообщения системы и действия пользователя" FontSize="18"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                                   Margin="0,0,0,12"/>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="«Неверный логин или пароль» / «Учётная запись временно заблокирована»" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Появляется на экране авторизации. Проверьте раскладку
+                                    клавиатуры и пароль (минимум 8 символов, буквы и цифры).
+                                    После 5 неудачных попыток вход блокируется на 15 минут.
+                                    Обратитесь к администратору для сброса пароля.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="«Не удалось подключиться к базе данных»" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Проверьте, что сервер PostgreSQL запущен и доступен
+                                    по сети, что строка подключения настроена корректно
+                                    (host, порт, имя БД, пользователь, пароль). После
+                                    устранения причины перезапустите приложение.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="«Заполните обязательные поля» / «Введены некорректные данные»" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Появляется при сохранении форм. Проверьте поля,
+                                    отмеченные знаком «*» и значения, не соответствующие
+                                    формату (телефон, email, числовые поля, даты).
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="«Дата окончания должна быть не раньше даты начала»" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Возникает при создании договора, плана KPI,
+                                    периода расчёта. Проверьте, что выбран корректный
+                                    диапазон дат.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="«Сумма платежа превышает сумму задолженности»" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    При погашении задолженности введите сумму, не
+                                    превышающую остаток долга. Для платежа сверх
+                                    задолженности используйте раздел «Платежи».
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Непредвиденная ошибка системы" FontSize="13"
+                                           FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="13"
+                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                                    Закройте окно сообщения, сохраните введённые данные
+                                    (по возможности), повторите действие. Если ошибка
+                                    повторяется — запишите текст сообщения и сообщите
+                                    разработчику.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Заключительная плашка -->
+                        <Border Background="{DynamicResource ThemeInfoBgBrush}" CornerRadius="14" Padding="16"
+                                Margin="0,12,0,0">
+                            <TextBlock TextWrapping="Wrap" FontSize="13"
+                                       Foreground="{DynamicResource ThemeInfoFgBrush}" FontWeight="SemiBold">
+                                Рекомендуется регулярно выгружать сводный отчёт и
+                                просматривать диаграмму источников прихода на главном экране —
+                                это помогает оценивать эффективность каналов привлечения.
+                            </TextBlock>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

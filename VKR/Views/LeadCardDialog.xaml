@@ -1,0 +1,225 @@
+<Window x:Class="VKR.Views.LeadCardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:VKR.Converters"
+        Title="Карточка гостя"
+        Width="880" MinWidth="720" SizeToContent="Height"
+        MaxHeight="900"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize"
+        Background="{DynamicResource ThemeSurfaceBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <conv:StatusToColorConverter x:Key="StatusBgConverter" Mode="background"/>
+        <conv:StatusToColorConverter x:Key="StatusFgConverter" Mode="foreground"/>
+
+        <!-- Стиль строки атрибута карточки -->
+        <Style x:Key="FieldKeyStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        <Style x:Key="FieldValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="DialogButton" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Margin" Value="4,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Margin="12"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="40" 
+                              ShadowDepth="12" Opacity="0.25"/>
+        </Border.Effect>
+        <StackPanel Margin="32">
+
+            <!-- Шапка с заголовком и закрытием -->
+            <Grid Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock x:Name="LeadIdText" Text="Карточка гостя №—" FontSize="13" 
+                               FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                    <TextBlock x:Name="ChildFullNameText" Text="" FontSize="26" 
+                               FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,8"/>
+                    <Border x:Name="StatusBadge" CornerRadius="999" Padding="14,6"
+                            HorizontalAlignment="Left">
+                        <TextBlock x:Name="StatusText" FontSize="12" FontWeight="Black"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button Content="Свернуть" Padding="10,6" FontWeight="Bold" Margin="0,0,6,0"
+                            Background="{DynamicResource ThemeBgBrush}" BorderThickness="0" Cursor="Hand"
+                            Click="MinimizeButton_Click"/>
+                    <Button Content="✕" Width="36" Height="36" Background="{DynamicResource ThemeBgBrush}" 
+                            Foreground="{DynamicResource ThemeTextMutedBrush}" BorderThickness="0" Cursor="Hand"
+                            Click="CloseButton_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Карточка с информацией -->
+            <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="16" Padding="24" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Дата создания -->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,16">
+                        <TextBlock Text="ДАТА СОЗДАНИЯ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="CreatedDateText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Возраст -->
+                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,16">
+                        <TextBlock Text="ВОЗРАСТ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="AgeText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Дата рождения -->
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,16">
+                        <TextBlock Text="ДАТА РОЖДЕНИЯ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="BirthDateText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Телефон -->
+                    <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,16">
+                        <TextBlock x:Name="PhoneLabelText" Text="ТЕЛЕФОН" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="PhoneText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Учреждение / работа -->
+                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,16">
+                        <TextBlock x:Name="PlaceLabelText" Text="УЧРЕЖДЕНИЕ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="PlaceText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Направление -->
+                    <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,16">
+                        <TextBlock Text="НАПРАВЛЕНИЕ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="DirectionText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Источник -->
+                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,16">
+                        <TextBlock Text="ОТКУДА УЗНАЛИ О ЦЕНТРЕ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="SourceText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Примечание по ребёнку -->
+                    <StackPanel Grid.Row="3" Grid.Column="2" Margin="0,0,0,16">
+                        <TextBlock Text="КОММЕНТАРИЙ МЕНЕДЖЕРА" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="ChildNoteText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <!-- Адрес проживания -->
+                    <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,16">
+                        <TextBlock Text="АДРЕС ПРОЖИВАНИЯ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="ResidenceAddressText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,16">
+                        <TextBlock Text="ПРИМЕЧАНИЕ ПО ДОГОВОРУ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="ContractNoteText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
+                        <TextBlock Text="РОДИТЕЛИ" Style="{StaticResource FieldKeyStyle}"/>
+                        <TextBlock x:Name="RelativesText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Кнопки -->
+            <WrapPanel HorizontalAlignment="Right" ItemHeight="46" ItemWidth="Auto">
+                <Button Content="💬  Заметки" MinWidth="130" Margin="0,0,8,8"
+                        Style="{StaticResource DialogButton}"
+                        Background="{DynamicResource ThemeSurfaceBrush}" Foreground="{DynamicResource ThemeTextBrush}"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                        Click="NotesButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="14">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Content="Закрыть" MinWidth="120" Margin="0,0,8,8"
+                        Style="{StaticResource DialogButton}"
+                        Background="{DynamicResource ThemeSurfaceBrush}" Foreground="{DynamicResource ThemeTextBrush}"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                        Click="CloseButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="14">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Content="✏  Редактировать" MinWidth="160" Margin="0,0,8,8"
+                        Style="{StaticResource DialogButton}"
+                        Background="{DynamicResource ThemeSurfaceBrush}" Foreground="{DynamicResource ThemeTextBrush}"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                        Click="EditButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="14">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </WrapPanel>
+        </StackPanel>
+    </Border>
+</Window>

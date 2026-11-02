@@ -1,0 +1,87 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Обычная: белая тема по умолчанию (исходный дизайн) -->
+
+    <Color x:Key="ThemeBgColor">#F1F5F9</Color>
+    <Color x:Key="ThemeSurfaceColor">#FFFFFF</Color>
+    <Color x:Key="ThemeHeaderColor">#FFFFFF</Color>
+    <Color x:Key="ThemeSidebarColor">#FFFFFF</Color>
+    <Color x:Key="ThemeOnPrimaryColor">#FFFFFF</Color>
+
+    <Color x:Key="ThemePrimaryColor">#0F172A</Color>
+    <Color x:Key="ThemePrimaryHoverColor">#1E293B</Color>
+    <Color x:Key="ThemePrimaryPressedColor">#334155</Color>
+
+    <Color x:Key="ThemeTextColor">#0F172A</Color>
+    <Color x:Key="ThemeTextMutedColor">#64748B</Color>
+    <Color x:Key="ThemeTextSubtleColor">#94A3B8</Color>
+    <Color x:Key="ThemeTextSecondaryColor">#475569</Color>
+
+    <Color x:Key="ThemeBorderColor">#E2E8F0</Color>
+    <Color x:Key="ThemeBorderHoverColor">#CBD5E1</Color>
+    <Color x:Key="ThemeBorderFocusColor">#94A3B8</Color>
+
+    <Color x:Key="ThemeHoverSurfaceColor">#F8FAFC</Color>
+    <Color x:Key="ThemeAltRowColor">#FFFFFF</Color>
+    <Color x:Key="ThemeGridLineColor">#F1F5F9</Color>
+    <Color x:Key="ThemeSelectedRowColor">#E0E7FF</Color>
+    <Color x:Key="ThemeSelectedRowTextColor">#1E40AF</Color>
+
+    <Color x:Key="ThemeShadowColor">#0F172A</Color>
+
+    <Color x:Key="ThemeAccentOrangeColor">#F59E0B</Color>
+    <Color x:Key="ThemeAccentTealColor">#14B8A6</Color>
+    <Color x:Key="ThemeAccentPinkColor">#EC4899</Color>
+    <Color x:Key="ThemeAccentYellowColor">#EAB308</Color>
+    <Color x:Key="ThemeAccentBlueColor">#3B82F6</Color>
+    <Color x:Key="ThemeAccentVioletColor">#6366F1</Color>
+
+    <Color x:Key="ThemeSuccessBgColor">#DCFCE7</Color>
+    <Color x:Key="ThemeSuccessFgColor">#166534</Color>
+    <Color x:Key="ThemeWarningBgColor">#FEF3C7</Color>
+    <Color x:Key="ThemeWarningFgColor">#92400E</Color>
+    <Color x:Key="ThemeDangerBgColor">#FFE4E6</Color>
+    <Color x:Key="ThemeDangerFgColor">#9F1239</Color>
+    <Color x:Key="ThemeInfoBgColor">#DBEAFE</Color>
+    <Color x:Key="ThemeInfoFgColor">#1E40AF</Color>
+
+    <SolidColorBrush x:Key="ThemeBgBrush" Color="{StaticResource ThemeBgColor}"/>
+    <SolidColorBrush x:Key="ThemeSurfaceBrush" Color="{StaticResource ThemeSurfaceColor}"/>
+    <SolidColorBrush x:Key="ThemeHeaderBrush" Color="{StaticResource ThemeHeaderColor}"/>
+    <SolidColorBrush x:Key="ThemeSidebarBrush" Color="{StaticResource ThemeSidebarColor}"/>
+    <SolidColorBrush x:Key="ThemeOnPrimaryBrush" Color="{StaticResource ThemeOnPrimaryColor}"/>
+    <SolidColorBrush x:Key="ThemePrimaryBrush" Color="{StaticResource ThemePrimaryColor}"/>
+    <SolidColorBrush x:Key="ThemePrimaryHoverBrush" Color="{StaticResource ThemePrimaryHoverColor}"/>
+    <SolidColorBrush x:Key="ThemePrimaryPressedBrush" Color="{StaticResource ThemePrimaryPressedColor}"/>
+    <SolidColorBrush x:Key="ThemeTextBrush" Color="{StaticResource ThemeTextColor}"/>
+    <SolidColorBrush x:Key="ThemeTextMutedBrush" Color="{StaticResource ThemeTextMutedColor}"/>
+    <SolidColorBrush x:Key="ThemeTextSubtleBrush" Color="{StaticResource ThemeTextSubtleColor}"/>
+    <SolidColorBrush x:Key="ThemeTextSecondaryBrush" Color="{StaticResource ThemeTextSecondaryColor}"/>
+    <SolidColorBrush x:Key="ThemeBorderBrush" Color="{StaticResource ThemeBorderColor}"/>
+    <SolidColorBrush x:Key="ThemeBorderHoverBrush" Color="{StaticResource ThemeBorderHoverColor}"/>
+    <SolidColorBrush x:Key="ThemeBorderFocusBrush" Color="{StaticResource ThemeBorderFocusColor}"/>
+    <SolidColorBrush x:Key="ThemeHoverSurfaceBrush" Color="{StaticResource ThemeHoverSurfaceColor}"/>
+    <SolidColorBrush x:Key="ThemeAltRowBrush" Color="{StaticResource ThemeAltRowColor}"/>
+    <SolidColorBrush x:Key="ThemeGridLineBrush" Color="{StaticResource ThemeGridLineColor}"/>
+    <SolidColorBrush x:Key="ThemeSelectedRowBrush" Color="{StaticResource ThemeSelectedRowColor}"/>
+    <SolidColorBrush x:Key="ThemeSelectedRowTextBrush" Color="{StaticResource ThemeSelectedRowTextColor}"/>
+    <SolidColorBrush x:Key="ThemeAccentOrangeBrush" Color="{StaticResource ThemeAccentOrangeColor}"/>
+    <SolidColorBrush x:Key="ThemeAccentTealBrush" Color="{StaticResource ThemeAccentTealColor}"/>
+    <SolidColorBrush x:Key="ThemeAccentPinkBrush" Color="{StaticResource ThemeAccentPinkColor}"/>
+    <SolidColorBrush x:Key="ThemeAccentYellowBrush" Color="{StaticResource ThemeAccentYellowColor}"/>
+    <SolidColorBrush x:Key="ThemeAccentBlueBrush" Color="{StaticResource ThemeAccentBlueColor}"/>
+    <SolidColorBrush x:Key="ThemeAccentVioletBrush" Color="{StaticResource ThemeAccentVioletColor}"/>
+    <SolidColorBrush x:Key="ThemeSuccessBgBrush" Color="{StaticResource ThemeSuccessBgColor}"/>
+    <SolidColorBrush x:Key="ThemeSuccessFgBrush" Color="{StaticResource ThemeSuccessFgColor}"/>
+    <SolidColorBrush x:Key="ThemeWarningBgBrush" Color="{StaticResource ThemeWarningBgColor}"/>
+    <SolidColorBrush x:Key="ThemeWarningFgBrush" Color="{StaticResource ThemeWarningFgColor}"/>
+    <SolidColorBrush x:Key="ThemeDangerBgBrush" Color="{StaticResource ThemeDangerBgColor}"/>
+    <SolidColorBrush x:Key="ThemeDangerFgBrush" Color="{StaticResource ThemeDangerFgColor}"/>
+    <SolidColorBrush x:Key="ThemeInfoBgBrush" Color="{StaticResource ThemeInfoBgColor}"/>
+    <SolidColorBrush x:Key="ThemeInfoFgBrush" Color="{StaticResource ThemeInfoFgColor}"/>
+
+    <DropShadowEffect x:Key="ThemeCardShadowEffect"
+                      Color="{StaticResource ThemeShadowColor}" BlurRadius="32" ShadowDepth="12" Opacity="0.05"/>
+
+</ResourceDictionary>

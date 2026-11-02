@@ -1,0 +1,241 @@
+<Window x:Class="VKR.Views.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Администрирование — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StatCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="22"/>
+            <Setter Property="Padding" Value="22,18"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Margin" Value="0,0,16,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="44" Height="44" CornerRadius="14"
+                            Background="#0F172A" Margin="0,0,14,0">
+                        <TextBlock Text="🛡" FontSize="20"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="РЕЖИМ АДМИНИСТРИРОВАНИЯ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Учётные записи" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="28">
+                <Grid Margin="0,0,0,20">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock Text="Пользователи системы" FontSize="32"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="Создание учётных записей сотрудников и назначение ролей"
+                                   FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="🔄  Обновить" Style="{StaticResource HeaderButtonStyle}"
+                                Click="Refresh_Click"/>
+                        <Button Content="➕  Добавить пользователя"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Click="AddUser_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <WrapPanel Margin="0,0,0,20">
+                    <Border Style="{StaticResource StatCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="ВСЕГО" FontSize="10" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                            <TextBlock x:Name="TotalUsersText" Text="0"
+                                       FontSize="28" FontWeight="ExtraBold"
+                                       Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource StatCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="АКТИВНЫХ" FontSize="10" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                            <TextBlock x:Name="ActiveUsersText" Text="0"
+                                       FontSize="28" FontWeight="ExtraBold"
+                                       Foreground="#166534" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource StatCardStyle}" Margin="0">
+                        <StackPanel>
+                            <TextBlock Text="ПРЕПОДАВАТЕЛЕЙ" FontSize="10" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                            <TextBlock x:Name="TeachersUsersText" Text="0"
+                                       FontSize="28" FontWeight="ExtraBold"
+                                       Foreground="#7C3AED" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="280"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="ПОИСК"
+                                       FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <TextBox x:Name="SearchBox" Style="{StaticResource RoundedTextBoxStyle}"
+                                     TextChanged="SearchBox_TextChanged"
+                                     ToolTip="Логин, ФИО или email"/>
+                        </StackPanel>
+                        <Border Grid.Column="2"
+                                Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14"
+                                Padding="14,8" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                BorderThickness="1" VerticalAlignment="Bottom">
+                            <CheckBox x:Name="OnlyActiveCheck"
+                                      Content="только активные"
+                                      VerticalAlignment="Center"
+                                      Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"
+                                      FontSize="13"
+                                      Checked="OnlyActiveCheck_Changed"
+                                      Unchecked="OnlyActiveCheck_Changed"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <TextBlock x:Name="UsersCountText"
+                           Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="12"
+                           FontWeight="Bold" Margin="4,0,0,12"/>
+
+                <TextBlock x:Name="ErrorText" Text=""
+                           Foreground="#B91C1C" FontWeight="SemiBold" FontSize="13"
+                           TextWrapping="Wrap" Margin="4,0,0,12" Visibility="Collapsed"/>
+
+                <TextBlock x:Name="EmptyText"
+                           Text="Пользователи не найдены. Добавьте первую учётную запись."
+                           Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="14"
+                           FontWeight="SemiBold" Margin="4,20,0,0" Visibility="Collapsed"/>
+
+                <DataGrid x:Name="UsersGrid"
+                          Style="{StaticResource ModernDataGridStyle}"
+                          MinHeight="280"
+                          MouseDoubleClick="UsersGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="2*"/>
+                        <DataGridTextColumn Header="ЛОГИН" Binding="{Binding LoginText}" Width="120"/>
+                        <DataGridTextColumn Header="РОЛЬ" Binding="{Binding RoleName}" Width="160"/>
+                        <DataGridTextColumn Header="EMAIL" Binding="{Binding EmailText}" Width="*"/>
+                        <DataGridTextColumn Header="СТАТУС" Binding="{Binding StatusText}" Width="110"/>
+                        <DataGridTextColumn Header="ВХОД" Binding="{Binding LastLoginText}" Width="160"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

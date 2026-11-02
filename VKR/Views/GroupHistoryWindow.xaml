@@ -1,0 +1,119 @@
+<Window x:Class="VKR.Views.GroupHistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="История изменений — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionPrimaryButtonStyle}"/>
+        <Style x:Key="FilterComboStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="HeaderTitleText" Text="История изменений"
+                                   FontSize="22" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="28,24,28,32">
+                <TextBlock x:Name="SubtitleText"
+                           Text="Зачисления, отчисления, переводы и смена преподавателей"
+                           FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                           Margin="0,0,0,20" TextWrapping="Wrap"/>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="160"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="ГРУППА" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="GroupFilterCombo" Style="{StaticResource FilterComboStyle}"
+                                      DisplayMemberPath="Title" SelectionChanged="Filter_Changed"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="ПРЕПОДАВАТЕЛЬ" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="TeacherFilterCombo" Style="{StaticResource FilterComboStyle}"
+                                      DisplayMemberPath="Title" SelectionChanged="Filter_Changed"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="ТИП СОБЫТИЯ" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="EventTypeFilterCombo" Style="{StaticResource FilterComboStyle}"
+                                      SelectionChanged="Filter_Changed"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="6">
+                            <TextBlock Text="ПЕРИОД" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal">
+                                <DatePicker x:Name="DateFromPicker" Width="120" Height="38" Margin="0,0,8,0"
+                                            SelectedDateChanged="Filter_Changed"/>
+                                <TextBlock Text="—" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker x:Name="DateToPicker" Width="120" Height="38"
+                                            SelectedDateChanged="Filter_Changed"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Grid.Column="8" Content="Сбросить" Style="{StaticResource HeaderButtonStyle}"
+                                VerticalAlignment="Bottom" Height="38" Click="ResetFilters_Click"/>
+                    </Grid>
+                </Border>
+
+                <TextBlock x:Name="CountText" Text="Событий: 0"
+                           FontSize="13" FontWeight="SemiBold"
+                           Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,0,0,10"/>
+
+                <DataGrid x:Name="HistoryGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          Style="{StaticResource ModernDataGridStyle}" MinHeight="420">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ДАТА" Binding="{Binding EventAtText}" Width="140"/>
+                        <DataGridTextColumn Header="ТИП" Binding="{Binding EventTypeText}" Width="170"/>
+                        <DataGridTextColumn Header="ГРУППА" Binding="{Binding GroupTitle}" Width="*"/>
+                        <DataGridTextColumn Header="СУБЪЕКТ" Binding="{Binding Subject}" Width="180"/>
+                        <DataGridTextColumn Header="ДЕТАЛИ" Binding="{Binding Detail}" Width="*"/>
+                        <DataGridTextColumn Header="ПРЕПОДАВАТЕЛЬ" Binding="{Binding TeacherName}" Width="150"/>
+                        <DataGridTextColumn Header="КТО ИЗМЕНИЛ" Binding="{Binding ChangedByName}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

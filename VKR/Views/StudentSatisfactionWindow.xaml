@@ -1,0 +1,102 @@
+<Window x:Class="VKR.Views.StudentSatisfactionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Обратная связь — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="УВЕДОМЛЕНИЯ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Обратная связь по занятиям" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="📊  Статистика" Style="{StaticResource HeaderButtonStyle}"
+                            Margin="0,0,8,0" Click="StatsButton_Click"/>
+                    <Button Content="🔄  Обновить" Style="{StaticResource HeaderButtonStyle}"
+                            Margin="0,0,8,0" Click="Refresh_Click"/>
+                    <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                            Click="BackButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="28,24,28,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="Задачи администратора" FontSize="32"
+                           FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                <TextBlock Text="Каждый месяц от даты начала договора — узнать, как ребёнку занимается. Напоминание можно отложить."
+                           FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                           TextWrapping="Wrap" Margin="0,4,0,0"/>
+                <Border Background="{DynamicResource ThemeInfoBgBrush}" CornerRadius="14" Padding="14,9"
+                        HorizontalAlignment="Left" Margin="0,12,0,0">
+                    <TextBlock x:Name="CountText" Text="Ожидают опроса: 0"
+                               Foreground="{DynamicResource ThemeInfoFgBrush}" FontWeight="Black" FontSize="13"/>
+                </Border>
+            </StackPanel>
+
+            <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" ClipToBounds="True"
+                    BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                <DataGrid x:Name="DueGrid"
+                          Style="{StaticResource ModernDataGridStyle}"
+                          PreviewMouseLeftButtonUp="DueGrid_PreviewMouseLeftButtonUp"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          MouseDoubleClick="DueGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ОБУЧАЮЩИЙСЯ" Binding="{Binding StudentName}" Width="2*"/>
+                        <DataGridTextColumn Header="ДОГОВОР" Binding="{Binding ContractNumber}" Width="120"/>
+                        <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="*"/>
+                        <DataGridTextColumn Header="НАЧАЛО ДОГОВОРА" Binding="{Binding ContractStartText}" Width="130"/>
+                        <DataGridTextColumn Header="ПЕРИОД" Binding="{Binding PeriodText}" Width="100"/>
+                        <DataGridTextColumn Header="СРОК ОПРОСА" Binding="{Binding DueDateText}" Width="120"/>
+                        <DataGridTextColumn Header="ПРОСРОЧКА" Binding="{Binding OverdueText}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button x:Name="SnoozeButton" Content="⏸  Отложить" Style="{StaticResource HeaderButtonStyle}"
+                        Margin="0,0,8,0" IsEnabled="False" Click="SnoozeButton_Click"/>
+                <Button x:Name="SurveyButton" Content="Заполнить опрос" Style="{StaticResource HeaderButtonStyle}"
+                        IsEnabled="False" Click="SurveyButton_Click"/>
+            </StackPanel>
+
+            <Border Grid.Row="2" x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                    Padding="14,10" Margin="0,16,0,48" VerticalAlignment="Bottom" Visibility="Collapsed">
+                <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                           FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

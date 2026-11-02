@@ -1,0 +1,483 @@
+<Window x:Class="VKR.Views.LeadsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:VKR.Converters"
+        Title="Карточки гостей — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <conv:StatusToColorConverter x:Key="StatusBgConverter" Mode="background"/>
+        <conv:StatusToColorConverter x:Key="StatusFgConverter" Mode="foreground"/>
+
+        <!-- Контурная кнопка шапки -->
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeBorderHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ИСПРАВЛЕНО: тёмная кнопка с правильным hover -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryPressedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Опасная кнопка (удалить) -->
+        <Style x:Key="DangerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FEE2E2"/>
+            <Setter Property="Foreground" Value="#9F1239"/>
+            <Setter Property="BorderBrush" Value="#FECACA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#FECACA"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Скруглённые поля -->
+        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стили DataGrid (без изменений) -->
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeGridLineBrush}"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="ColumnHeaderHeight" Value="24"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="RowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E0E7FF"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ШАПКА -->
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}" 
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11" 
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Карточки гостей" FontSize="22" 
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- КОНТЕНТ -->
+        <Grid Grid.Row="1" Margin="28">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+                <!-- Заголовок + кнопки -->
+                <Grid Grid.Row="0" Margin="0,0,0,16">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock Text="Управление карточками гостей" FontSize="32" 
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="Кнопка сверху добавляет карточку. Ниже — список: прокрутка и двойной щелчок открывают все данные гостя"
+                                   FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="📥  Импорт Excel" Style="{StaticResource HeaderButtonStyle}"
+                                Click="ImportExcel_Click"/>
+                        <Button Content="📤  Экспорт Excel" Style="{StaticResource HeaderButtonStyle}"
+                                Click="ExportExcel_Click"/>
+                        <Button Content="🔄  Обновить" Style="{StaticResource HeaderButtonStyle}"
+                                Click="RefreshButton_Click"/>
+                        <Button Content="➕  Добавить карточку гостя" Style="{StaticResource PrimaryButtonStyle}"
+                                Click="AddButton_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- KPI -->
+                <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,16">
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" 
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="Всего карточек" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="TotalCountText" Text="0" FontSize="28" 
+                                       FontWeight="Black" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" 
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="4,0,4,0">
+                        <StackPanel>
+                            <TextBlock Text="Новые" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="NewCountText" Text="0" FontSize="28" 
+                                       FontWeight="Black" Foreground="{DynamicResource ThemeSelectedRowTextBrush}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" 
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="4,0,4,0">
+                        <StackPanel>
+                            <TextBlock Text="В работе" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="InProgressCountText" Text="0" FontSize="28" 
+                                       FontWeight="Black" Foreground="{DynamicResource ThemeWarningFgBrush}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" 
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="8,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Конвертировано" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="ConvertedCountText" Text="0" FontSize="28" 
+                                       FontWeight="Black" Foreground="{DynamicResource ThemeSuccessFgBrush}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <!-- Поиск -->
+                <Border Grid.Row="2" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" 
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="220"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                            <TextBlock Text="ПОИСК ПО ФИО И ВСЕМ ЗАПОЛНЕННЫМ ПОЛЯМ"
+                                       FontSize="11" FontWeight="Black" 
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <TextBox x:Name="SearchTextBox" Style="{StaticResource RoundedTextBoxStyle}"
+                                     TextChanged="SearchTextBox_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="СТАТУС" FontSize="11" FontWeight="Black" 
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="StatusFilterComboBox" 
+                                      Style="{StaticResource RoundedComboBoxStyle}"
+                                      SelectionChanged="StatusFilterComboBox_SelectionChanged">
+                                <ComboBoxItem Content="Все статусы" IsSelected="True"/>
+                                <ComboBoxItem Content="новая"/>
+                                <ComboBoxItem Content="подтверждена"/>
+                                <ComboBoxItem Content="посещено"/>
+                                <ComboBoxItem Content="конвертирована"/>
+                                <ComboBoxItem Content="отказ"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Таблица -->
+                <Border Grid.Row="3" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" ClipToBounds="True"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Padding="0">
+                    <Border.Effect>
+                        <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="32" 
+                                          ShadowDepth="12" Opacity="0.05"/>
+                    </Border.Effect>
+                    <DockPanel>
+                        <!-- ШАПКА ТАБЛИЦЫ С КНОПКАМИ -->
+                        <Border DockPanel.Dock="Top" Padding="20,12"
+                                BorderBrush="{DynamicResource ThemeGridLineBrush}" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Список гостей" FontSize="15" 
+                                               FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                    <TextBlock x:Name="ShownCountText" 
+                                               Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="11" 
+                                               FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <!-- КНОПКИ CRUD -->
+                                <StackPanel Orientation="Horizontal" 
+                                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button x:Name="OpenCardButton" Content="Открыть карточку"
+                                            Style="{StaticResource HeaderButtonStyle}"
+                                            Click="OpenCardButton_Click" IsEnabled="False"/>
+                                    <Button x:Name="EditButton" Content="✏  Редактировать"
+                                            Style="{StaticResource HeaderButtonStyle}"
+                                            Click="EditButton_Click" IsEnabled="False"/>
+                                    <Button x:Name="DeleteButton" Content="🗑  Удалить"
+                                            Style="{StaticResource DangerButtonStyle}"
+                                            Click="DeleteButton_Click" IsEnabled="False"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        
+                        <!-- DataGrid -->
+                        <DataGrid x:Name="LeadsDataGrid" 
+          Style="{StaticResource ModernDataGridStyle}"
+          SelectionChanged="LeadsDataGrid_SelectionChanged"
+          MouseDoubleClick="LeadsDataGrid_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№" Binding="{Binding IdLead}" Width="60"/>
+                                <DataGridTextColumn Header="ДАТА" Width="110">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="CreatedDate" StringFormat="dd.MM.yyyy"/>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding ChildFullName}" Width="200">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="ТИП" Binding="{Binding GuestKindText}" Width="90"/>
+                                <DataGridTextColumn Header="ВОЗРАСТ" Binding="{Binding ChildAgeText}" Width="80"/>
+                                <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding DisplayPhone}" Width="140"/>
+                                <DataGridTextColumn Header="РОДСТВЕННИКИ" Binding="{Binding RelativesSummary}" Width="200"/>
+                                <DataGridTextColumn Header="УЧРЕЖДЕНИЕ / РАБОТА" Binding="{Binding InstitutionOrWorkplaceText}" Width="160"/>
+                                <DataGridTextColumn Header="НАПРАВЛЕНИЯ" Binding="{Binding AllDirectionsText}" Width="180"/>
+                                <DataGridTextColumn Header="ОТКУДА УЗНАЛИ" Binding="{Binding SourceName}" Width="140"/>
+                                <DataGridTemplateColumn Header="СТАТУС" Width="160">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="999" Padding="12,5" 
+                                                    HorizontalAlignment="Left"
+                                                    Background="{Binding Status, Converter={StaticResource StatusBgConverter}}">
+                                                <TextBlock Text="{Binding Status}" 
+                                                           FontSize="11" FontWeight="Black"
+                                                           Foreground="{Binding Status, Converter={StaticResource StatusFgConverter}}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="ПРИМ. РЕБЁНОК" Width="140">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CommentPreview}"
+                                                       ToolTip="{Binding Comment}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       FontStyle="Italic"
+                                                       Foreground="{DynamicResource ThemeTextMutedBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasComment}" Value="False">
+                                                                <Setter Property="Text" Value="—"/>
+                                                                <Setter Property="Foreground" Value="#CBD5E1"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="ПРИМ. ДОГОВОР" Width="140">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ContractNotePreview}"
+                                                       ToolTip="{Binding ContractNote}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       FontStyle="Italic"
+                                                       Foreground="{DynamicResource ThemeTextMutedBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasContractNote}" Value="False">
+                                                                <Setter Property="Text" Value="—"/>
+                                                                <Setter Property="Foreground" Value="#CBD5E1"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Row="4" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="16" Padding="16"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="ЗАПОЛНЕННЫЕ ПОЛЯ ВЫБРАННОЙ КАРТОЧКИ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="FilledFieldsText" Text="Выберите гостя в списке. Двойной щелчок открывает карточку."
+                                   FontSize="13" TextWrapping="Wrap" Margin="0,6,0,0"
+                                   Foreground="{DynamicResource ThemeTextBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Заглушка "не найдено" -->
+                <Border x:Name="EmptyStatePanel" Grid.Row="5"
+                        Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="40"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,16,0,0"
+                        Visibility="Collapsed">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="📭" FontSize="48" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Заявок не найдено" FontSize="16" FontWeight="Bold" 
+                                   Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" Margin="0,12,0,4"/>
+                        <TextBlock Text="Попробуйте изменить параметры поиска или добавьте новую карточку гостя" 
+                                   FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+        </Grid>
+    </Grid>
+</Window>

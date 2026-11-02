@@ -1,0 +1,86 @@
+<Window x:Class="VKR.Views.LeadRepresentativeMiniDialog"
+
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+
+        Title="Представитель"
+
+        Width="560" SizeToContent="Height"
+
+        WindowStartupLocation="CenterOwner"
+
+        WindowStyle="None" ResizeMode="NoResize"
+
+        Background="Transparent" AllowsTransparency="True"
+
+        FontFamily="Segoe UI">
+
+    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Margin="12"
+
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Padding="28">
+
+        <StackPanel>
+
+            <TextBlock Text="Дополнительный представитель" FontSize="20" FontWeight="ExtraBold" Margin="0,0,0,16"/>
+
+            <StackPanel Margin="0,0,0,12">
+
+                <TextBlock Text="ФИО *" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+
+                <TextBox x:Name="FullNameBox" Height="40" Padding="12,0" VerticalContentAlignment="Center"/>
+
+            </StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,12">
+                    <TextBlock Text="ТЕЛЕФОН *" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <xctk:MaskedTextBox x:Name="PhoneBox" Mask="+7 (000) 000-00-00" Height="40"
+                                        Padding="12,0" VerticalContentAlignment="Center" PromptChar="_"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,12">
+                    <TextBlock Text="СТЕПЕНЬ РОДСТВА" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="RelationCombo" Height="40"
+                              DisplayMemberPath="Name" SelectedValuePath="Id"
+                              VerticalContentAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+                    <TextBlock Text="АДРЕС ПРОЖИВАНИЯ" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <TextBox x:Name="ResidenceAddressBox" MinHeight="52" MaxHeight="52" Padding="12,8"
+                             TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock x:Name="ErrorText" Foreground="#E11D48" TextWrapping="Wrap" Margin="0,12,0,0" Visibility="Collapsed"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+
+                <Button Content="Отмена" Width="110" Height="40" Margin="0,0,8,0" Click="Cancel_Click"/>
+
+                <Button Content="Сохранить" Width="120" Height="40" Click="Save_Click"
+
+                        Background="{DynamicResource ThemePrimaryBrush}" Foreground="{DynamicResource ThemeOnPrimaryBrush}" BorderThickness="0"/>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Border>
+
+</Window>
+
+

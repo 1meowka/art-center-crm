@@ -1,0 +1,136 @@
+<Window x:Class="VKR.Views.TeacherStatsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Статистика посещаемости" Width="980" Height="680"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None" ResizeMode="NoResize"
+        Background="Transparent" AllowsTransparency="True"
+        FontFamily="Segoe UI">
+    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Margin="12"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="40" ShadowDepth="12" Opacity="0.25"/>
+        </Border.Effect>
+        <Grid Margin="32">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Статистика посещаемости" FontSize="22" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                    <TextBlock x:Name="TeacherNameText" FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Button Content="✕" HorizontalAlignment="Right" VerticalAlignment="Top" Width="32" Height="32"
+                        Background="{DynamicResource ThemeBgBrush}" Foreground="{DynamicResource ThemeTextMutedBrush}" BorderThickness="0" Cursor="Hand" Click="Close_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="#E2E8F0"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="ПЕРИОД С" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,4"/>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="12" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Height="38">
+                        <xctk:MaskedTextBox x:Name="FromDateBox" Mask="00.00.0000" BorderThickness="0" Background="Transparent"
+                                            VerticalContentAlignment="Center" Padding="14,0" FontSize="13" PromptChar="_"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="ПЕРИОД ПО" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,4"/>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="12" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Height="38">
+                        <xctk:MaskedTextBox x:Name="ToDateBox" Mask="00.00.0000" BorderThickness="0" Background="Transparent"
+                                            VerticalContentAlignment="Center" Padding="14,0" FontSize="13" PromptChar="_"/>
+                    </Border>
+                </StackPanel>
+                <Button Grid.Column="4" Content="Рассчитать" Padding="14,7" Height="38" VerticalAlignment="Bottom"
+                        Background="{DynamicResource ThemePrimaryBrush}" Foreground="{DynamicResource ThemeOnPrimaryBrush}" BorderThickness="0" FontWeight="Bold" FontSize="13" Cursor="Hand" Click="Calculate_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border>
+                            <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/></Trigger></ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,12">
+                <Button Content="Этот месяц" Padding="12,7" Margin="0,0,8,0" Click="ThisMonth_Click" Background="{DynamicResource ThemeBgBrush}" Foreground="{DynamicResource ThemeTextBrush}" BorderThickness="0" FontWeight="Bold" Cursor="Hand"/>
+                <Button Content="Прошлый месяц" Padding="12,7" Margin="0,0,8,0" Click="LastMonth_Click" Background="{DynamicResource ThemeBgBrush}" Foreground="{DynamicResource ThemeTextBrush}" BorderThickness="0" FontWeight="Bold" Cursor="Hand"/>
+                <Button Content="Этот год" Padding="12,7" Click="ThisYear_Click" Background="{DynamicResource ThemeBgBrush}" Foreground="{DynamicResource ThemeTextBrush}" BorderThickness="0" FontWeight="Bold" Cursor="Hand"/>
+            </StackPanel>
+
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16,12" Margin="0,0,0,16" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"><TextBlock Text="ГРУПП" FontSize="10" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/><TextBlock x:Name="GroupsCountText" Text="—" FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/></StackPanel>
+                        <StackPanel Grid.Column="1"><TextBlock Text="УЧЕНИКОВ" FontSize="10" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/><TextBlock x:Name="StudentsCountText" Text="—" FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/></StackPanel>
+                        <StackPanel Grid.Column="2"><TextBlock Text="ПО ПЛАНУ" FontSize="10" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/><TextBlock x:Name="PlannedLessonsText" Text="—" FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/></StackPanel>
+                        <StackPanel Grid.Column="3"><TextBlock Text="ПРОВЕДЕНО" FontSize="10" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/><TextBlock x:Name="LessonsCountText" Text="—" FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/></StackPanel>
+                        <StackPanel Grid.Column="4"><TextBlock Text="ЧАСОВ" FontSize="10" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/><TextBlock x:Name="HoursCountText" Text="—" FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/></StackPanel>
+                        <StackPanel Grid.Column="5"><TextBlock Text="ПОСЕЩАЕМОСТЬ" FontSize="10" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/><TextBlock x:Name="OverallPercentText" Text="—" FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/></StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" CornerRadius="12" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" ClipToBounds="True">
+                    <DataGrid x:Name="StatsGrid" Background="{DynamicResource ThemeSurfaceBrush}" BorderThickness="0" HeadersVisibility="Column"
+                              GridLinesVisibility="None" HorizontalGridLinesBrush="{DynamicResource ThemeGridLineBrush}"
+                              RowHeight="24" ColumnHeaderHeight="24" AutoGenerateColumns="False"
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+                              AlternatingRowBackground="{DynamicResource ThemeSurfaceBrush}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ГРУППА" Binding="{Binding GroupTitle}" Width="2*"/>
+                            <DataGridTextColumn Header="УЧЕНИКОВ" Binding="{Binding StudentsCount}" Width="*"/>
+                            <DataGridTextColumn Header="ПО ПЛАНУ" Binding="{Binding PlannedLessons}" Width="*"/>
+                            <DataGridTextColumn Header="ПРОВЕДЕНО" Binding="{Binding LessonsHeld}" Width="*"/>
+                            <DataGridTextColumn Header="ЧАСЫ" Binding="{Binding TotalHoursText}" Width="*"/>
+                            <DataGridTextColumn Header="БЫЛ" Binding="{Binding Visits}" Width="*"/>
+                            <DataGridTextColumn Header="НЕ БЫЛ" Binding="{Binding Absences}" Width="*"/>
+                            <DataGridTextColumn Header="УВАЖ." Binding="{Binding Excused}" Width="*"/>
+                            <DataGridTextColumn Header="%" Binding="{Binding PercentText}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+
+            <Button Grid.Row="4" Content="Закрыть" Width="120" Height="42" HorizontalAlignment="Right" Margin="0,16,0,0"
+                    Background="{DynamicResource ThemePrimaryBrush}" Foreground="{DynamicResource ThemeOnPrimaryBrush}" BorderThickness="0" FontWeight="Bold" FontSize="13" Cursor="Hand" Click="Close_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                        <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/></Trigger></ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </Border>
+</Window>

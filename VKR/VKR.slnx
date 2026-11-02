@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="VKR.csproj" />
+  <Project Path="../MaxBotWorker/MaxBotWorker.csproj" />
+</Solution>

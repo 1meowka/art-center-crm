@@ -1,0 +1,243 @@
+<Window x:Class="VKR.Views.NotificationStatsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Статистика уведомлений — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="KpiCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="18,14"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="MinWidth" Value="150"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="УВЕДОМЛЕНИЯ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Статистика и история" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="🔄  Обновить" Style="{StaticResource HeaderButtonStyle}"
+                            Margin="0,0,8,0" Click="Refresh_Click"/>
+                    <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                            Click="BackButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Margin="28,20,28,0" Background="{DynamicResource ThemeSurfaceBrush}"
+                CornerRadius="18" Padding="18,14"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Период" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,12,0"
+                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                <ComboBox Grid.Column="1" x:Name="PeriodPresetCombo" Height="38"
+                          SelectionChanged="PeriodPresetCombo_SelectionChanged">
+                    <ComboBoxItem Content="Текущий месяц" Tag="CurrentMonth"/>
+                    <ComboBoxItem Content="Прошлый месяц" Tag="LastMonth"/>
+                    <ComboBoxItem Content="Текущий год" Tag="CurrentYear"/>
+                    <ComboBoxItem Content="Произвольный" Tag="Custom"/>
+                </ComboBox>
+                <TextBlock Grid.Column="2" Text="с" VerticalAlignment="Center" Margin="16,0,8,0"
+                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                <DatePicker Grid.Column="3" x:Name="DateFromPicker" Height="38"
+                            SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+                <TextBlock Grid.Column="4" Text="по" VerticalAlignment="Center" Margin="16,0,8,0"
+                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                <DatePicker Grid.Column="5" x:Name="DateToPicker" Height="38"
+                            SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+                <TextBlock Grid.Column="6" x:Name="PeriodHintText" VerticalAlignment="Center" Margin="16,0,0,0"
+                           FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"/>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="2" x:Name="StatsTabs" Margin="28,16,28,24"
+                    Background="Transparent" BorderThickness="0">
+            <TabItem Header="Обратная связь по занятиям">
+                <Grid Margin="0,12,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="ОПРОСОВ" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                                <TextBlock x:Name="SatisfactionTotalText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="НРАВИТСЯ" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeSuccessFgBrush}"/>
+                                <TextBlock x:Name="SatisfactionPositiveText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="SatisfactionPositiveShareText" Text="0%" FontSize="12"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="НЕ НРАВИТСЯ" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeDangerFgBrush}"/>
+                                <TextBlock x:Name="SatisfactionNegativeText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="SatisfactionNegativeShareText" Text="0%" FontSize="12"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}" Margin="0">
+                            <StackPanel>
+                                <TextBlock Text="НЕЙТРАЛЬНО" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                <TextBlock x:Name="SatisfactionNeutralText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="SatisfactionNeutralShareText" Text="0%" FontSize="12"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" ClipToBounds="True"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <DataGrid x:Name="SatisfactionHistoryGrid"
+                                  Style="{StaticResource ModernDataGridStyle}"
+                                  IsReadOnly="True" AutoGenerateColumns="False"
+                                  CanUserAddRows="False" SelectionMode="Single">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ДАТА" Binding="{Binding CompletedAtText}" Width="130"/>
+                                <DataGridTextColumn Header="ОБУЧАЮЩИЙСЯ" Binding="{Binding StudentName}" Width="2*"/>
+                                <DataGridTextColumn Header="ДОГОВОР" Binding="{Binding ContractNumber}" Width="110"/>
+                                <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="*"/>
+                                <DataGridTextColumn Header="ПЕРИОД" Binding="{Binding PeriodText}" Width="90"/>
+                                <DataGridTextColumn Header="ОЦЕНКА" Binding="{Binding LevelName}" Width="140"/>
+                                <DataGridTextColumn Header="ПРИЧИНА" Binding="{Binding ReasonText}" Width="*"/>
+                                <DataGridTextColumn Header="ДРУГОЕ НАПР." Binding="{Binding SuggestedDirectionText}" Width="*"/>
+                                <DataGridTextColumn Header="КОММЕНТАРИЙ" Binding="{Binding CommentText}" Width="*"/>
+                                <DataGridTextColumn Header="АДМИНИСТРАТОР" Binding="{Binding CompletedByText}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Продление договоров">
+                <Grid Margin="0,12,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="ОБРАБОТАНО" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                                <TextBlock x:Name="RenewalTotalText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="ПРОДЛЯТ" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeSuccessFgBrush}"/>
+                                <TextBlock x:Name="RenewalYesText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="RenewalYesShareText" Text="0%" FontSize="12"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="НЕ ПРОДЛЯТ" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeDangerFgBrush}"/>
+                                <TextBlock x:Name="RenewalNoText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="RenewalNoShareText" Text="0%" FontSize="12"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="НЕ УКАЗАНО" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                <TextBlock x:Name="RenewalUnknownText" Text="0" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="RenewalUnknownShareText" Text="0%" FontSize="12"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource KpiCardStyle}" Margin="0">
+                            <StackPanel>
+                                <TextBlock Text="ДОЛЯ ПРОДЛЕНИЙ" FontSize="10" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeInfoFgBrush}"/>
+                                <TextBlock x:Name="RenewalRateText" Text="—" FontSize="28" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="среди тех, кто ответил да/нет" FontSize="11"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" ClipToBounds="True"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <DataGrid x:Name="RenewalHistoryGrid"
+                                  Style="{StaticResource ModernDataGridStyle}"
+                                  IsReadOnly="True" AutoGenerateColumns="False"
+                                  CanUserAddRows="False" SelectionMode="Single">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ДАТА" Binding="{Binding CompletedAtText}" Width="130"/>
+                                <DataGridTextColumn Header="ОБУЧАЮЩИЙСЯ" Binding="{Binding StudentName}" Width="2*"/>
+                                <DataGridTextColumn Header="ДОГОВОР" Binding="{Binding ContractNumber}" Width="110"/>
+                                <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="*"/>
+                                <DataGridTextColumn Header="ОКОНЧАНИЕ" Binding="{Binding EndDateText}" Width="110"/>
+                                <DataGridTextColumn Header="РЕШЕНИЕ" Binding="{Binding WillRenewText}" Width="140"/>
+                                <DataGridTextColumn Header="КОММЕНТАРИЙ" Binding="{Binding CommentText}" Width="2*"/>
+                                <DataGridTextColumn Header="АДМИНИСТРАТОР" Binding="{Binding CompletedByText}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="2" x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                Padding="14,10" Margin="28,0,28,24" VerticalAlignment="Bottom" Visibility="Collapsed">
+            <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                       FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>

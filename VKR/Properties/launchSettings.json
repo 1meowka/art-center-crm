@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "VKR": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

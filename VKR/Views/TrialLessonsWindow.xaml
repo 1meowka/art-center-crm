@@ -1,0 +1,596 @@
+<Window x:Class="VKR.Views.TrialLessonsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Пробные занятия — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionPrimaryButtonStyle}"/>
+
+        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeGridLineBrush}"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="ColumnHeaderHeight" Value="24"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="6,0"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E0E7FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,0,16,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="TabButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TabButtonActiveStyle" TargetType="Button" BasedOn="{StaticResource TabButtonStyle}">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Пробные занятия" FontSize="22" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="28,24,28,32">
+                <Grid Margin="0,0,0,20">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock Text="Запись на пробное" FontSize="32" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="Администратор сам выбирает дату и время — расписание групп не обязательно"
+                                   FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="➕  Записать на пробное" Style="{StaticResource PrimaryButtonStyle}"
+                                Click="BookTrial_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="SlotSelectionPanel" Visibility="Collapsed" Margin="0,0,0,16">
+                    <RadioButton x:Name="ByDateRadio" Visibility="Collapsed" IsChecked="True"
+                                 Checked="SearchMode_Changed"/>
+                    <RadioButton x:Name="ByDirectionRadio" Visibility="Collapsed"
+                                 Checked="SearchMode_Changed"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="320"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                    <!-- Фильтр по дате -->
+                    <Border x:Name="ByDatePanel" Grid.Column="0"
+                            Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="ДАТА" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                            <DatePicker x:Name="SelectedDatePicker" Height="38"
+                                        SelectedDateChanged="SelectedDatePicker_SelectedDateChanged"/>
+                            <TextBlock Text="Показываются направления и слоты, которые есть в расписании в этот день недели."
+                                       FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                       TextWrapping="Wrap" Margin="0,12,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Фильтр по направлениям -->
+                    <Border x:Name="ByDirectionPanel" Grid.Column="0" Visibility="Collapsed"
+                            Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                            <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="НАПРАВЛЕНИЯ"
+                                       FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                            <ListBox x:Name="DirectionsList" ItemContainerStyle="{StaticResource SectionListBoxItemStyle}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Content="{Binding Name}"
+                                                  IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Checked="DirectionFilter_Changed"
+                                                  Unchecked="DirectionFilter_Changed"
+                                                  FontWeight="SemiBold"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                    </Border>
+
+                    <StackPanel Grid.Column="2">
+                        <Border x:Name="DatesPanel" Visibility="Collapsed"
+                                Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="ДОСТУПНЫЕ ДАТЫ" FontSize="11" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                                <ListBox x:Name="AvailableDatesList" MaxHeight="160"
+                                         ItemContainerStyle="{StaticResource SectionListBoxItemStyle}"
+                                         SelectionChanged="AvailableDatesList_SelectionChanged"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" ClipToBounds="True"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                            <DockPanel MinHeight="320">
+                                <Border DockPanel.Dock="Top" Padding="20,14"
+                                        BorderBrush="{DynamicResource ThemeGridLineBrush}" BorderThickness="0,0,0,1">
+                                    <StackPanel>
+                                        <TextBlock Text="Слоты расписания" FontSize="15" FontWeight="ExtraBold"
+                                                   Foreground="{DynamicResource ThemeTextBrush}"/>
+                                        <TextBlock x:Name="SlotsCountText"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                                   FontSize="11" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <DataGrid x:Name="SlotsGrid" Style="{StaticResource ModernDataGridStyle}"
+                                          MouseDoubleClick="SlotsGrid_MouseDoubleClick">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="ДАТА" Binding="{Binding DateText}" Width="100"/>
+                                        <DataGridTextColumn Header="ВРЕМЯ" Binding="{Binding TimeRangeText}" Width="110"/>
+                                        <DataGridTextColumn Header="ТИП" Binding="{Binding SlotTypeText}" Width="120"/>
+                                        <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="1.5*"/>
+                                        <DataGridTextColumn Header="ГРУППА" Binding="{Binding GroupTitle}" Width="1.4*"/>
+                                        <DataGridTextColumn Header="ПРЕПОДАВАТЕЛЬ" Binding="{Binding TeacherName}" Width="1.6*"/>
+                                        <DataGridTextColumn Header="КАБИНЕТ" Binding="{Binding ClassroomText}" Width="100"/>
+                                        <DataGridTextColumn Header="МЕСТА" Binding="{Binding OccupancyText}" Width="130"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+                </Grid>
+
+                <!-- Кандидаты на заключение договора -->
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                    <StackPanel Margin="20">
+                        <Grid Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Кандидаты на заключение договора" FontSize="20" FontWeight="ExtraBold"/>
+                                <TextBlock Text="После пробного — готовы к зачислению и оформлению договора"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           TextWrapping="Wrap" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Button Content="Зачислить" Style="{StaticResource PrimaryButtonStyle}"
+                                        Margin="0,0,8,0" Click="EnrollCandidate_Click"/>
+                                <Button Content="Оформить договор" Style="{StaticResource HeaderButtonStyle}"
+                                        Margin="0,0,8,0" Click="CreateContractForCandidate_Click"/>
+                                <Button Content="Обновить" Style="{StaticResource HeaderButtonStyle}"
+                                        Click="RefreshContractCandidates_Click"/>
+                            </StackPanel>
+                        </Grid>
+                        <Border CornerRadius="16" ClipToBounds="True"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                            <DataGrid x:Name="ContractCandidatesGrid" Style="{StaticResource ModernDataGridStyle}"
+                                      MinHeight="140" MaxHeight="220" IsReadOnly="True"
+                                      SelectionChanged="ContractCandidatesGrid_SelectionChanged">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="РЕБЁНОК" Binding="{Binding ChildFullName}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="*"/>
+                                    <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="*"/>
+                                    <DataGridTextColumn Header="ПРОБНОЕ" Binding="{Binding ScheduledText}" Width="120"/>
+                                    <DataGridTextColumn Header="ИТОГ" Binding="{Binding ReadinessText}" Width="150"/>
+                                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding ContactPhone}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        <TextBlock x:Name="ContractCandidatesEmptyText"
+                                   Text="Нет кандидатов — они появятся после пробного с положительным результатом."
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" FontStyle="Italic"
+                                   Margin="4,12,0,0" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Задачи администратора после пробного -->
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                    <StackPanel Margin="20">
+                        <Grid Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Задачи администратора" FontSize="20" FontWeight="ExtraBold"/>
+                                <TextBlock Text="Через 30 минут после окончания пробного — узнать, как прошло занятие, и заполнить результат"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Button Content="Отметить выполненной" Style="{StaticResource HeaderButtonStyle}"
+                                        Margin="0,0,8,0" Click="CompleteFollowupTask_Click"/>
+                                <Button Content="Обновить" Style="{StaticResource HeaderButtonStyle}"
+                                        Click="RefreshFollowupTasks_Click"/>
+                            </StackPanel>
+                        </Grid>
+                        <Border CornerRadius="16" ClipToBounds="True"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                            <DataGrid x:Name="FollowupTasksGrid" Style="{StaticResource ModernDataGridStyle}"
+                                      MinHeight="160" MaxHeight="240" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="РЕБЁНОК" Binding="{Binding ChildFullName}" Width="*"/>
+                                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding TaskStatusText}" Width="130"/>
+                                    <DataGridTextColumn Header="ПРОБНОЕ" Binding="{Binding ScheduledText}" Width="120"/>
+                                    <DataGridTextColumn Header="СПРОСИТЬ С" Binding="{Binding DueAtText}" Width="120"/>
+                                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding PrimaryPhoneText}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        <TextBlock x:Name="FollowupTasksEmptyText"
+                                   Text="Нет активных задач — они появятся после записи на пробное."
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" FontStyle="Italic"
+                                   Margin="4,12,0,0" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Журнал пробных — недельное расписание -->
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,8,0,16">
+                    <StackPanel Margin="20">
+                        <Grid Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="Журнал записей на пробные" FontSize="20" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="JournalHintText"
+                                           Text="Недельный обзор — кто записан, когда и на какое занятие"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"
+                                           TextWrapping="Wrap" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <Button Content="Отметить результат" Style="{StaticResource HeaderButtonStyle}"
+                                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Click="MarkResult_Click"/>
+                        </Grid>
+
+                        <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="16" Padding="14,10"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="← Неделя"
+                                        Style="{StaticResource HeaderButtonStyle}"
+                                        Padding="12,8" Click="JournalPrevWeek_Click"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock x:Name="JournalWeekRangeText"
+                                               Text="Неделя"
+                                               FontSize="15" FontWeight="ExtraBold"
+                                               Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Листайте стрелками или перейдите к нужной дате"
+                                               FontSize="11" Foreground="{DynamicResource ThemeTextSubtleBrush}"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                        <TextBlock Text="Перейти к дате:"
+                                                   FontSize="11" FontWeight="Bold"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <DatePicker x:Name="JournalJumpDatePicker"
+                                                    Width="130" Height="32" FontSize="12"
+                                                    VerticalContentAlignment="Center"
+                                                    SelectedDateChanged="JournalJumpDatePicker_SelectedDateChanged"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Button Content="Сегодня" Style="{StaticResource HeaderButtonStyle}"
+                                            Padding="12,8" Margin="0,0,8,0"
+                                            Click="JournalTodayWeek_Click"/>
+                                    <Button Content="Неделя →" Style="{StaticResource HeaderButtonStyle}"
+                                            Padding="12,8" Click="JournalNextWeek_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid Margin="0,0,0,12">
+                            <TextBlock x:Name="JournalCountText"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="12"
+                                       FontWeight="Bold" VerticalAlignment="Center"/>
+                            <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="16" Padding="6"
+                                    BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                                    HorizontalAlignment="Right">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="JournalViewCardsButton" Content="🃏  Карточки"
+                                            Style="{StaticResource TabButtonActiveStyle}"
+                                            Click="JournalViewCards_Click"/>
+                                    <Button x:Name="JournalViewListButton" Content="📋  Список"
+                                            Style="{StaticResource TabButtonStyle}"
+                                            Click="JournalViewList_Click"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <ItemsControl x:Name="JournalCardsControl">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="7"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="4" CornerRadius="16" Padding="12" MinHeight="240"
+                                            BorderThickness="1" Background="{DynamicResource ThemeSurfaceBrush}"
+                                            BorderBrush="{DynamicResource ThemeBorderBrush}">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                        <Setter Property="Background" Value="#FFF7ED"/>
+                                                        <Setter Property="BorderBrush" Value="#F97316"/>
+                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <DockPanel Margin="0,0,0,10">
+                                                <Border Width="36" Height="36" CornerRadius="14"
+                                                        Background="#FFEDD5" DockPanel.Dock="Left" Margin="0,0,8,0">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFEDD5"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                                    <Setter Property="Background" Value="#F97316"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="{Binding ShortDayName}"
+                                                               FontSize="11" FontWeight="Black"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Foreground" Value="#C2410C"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Border>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding DateLongText}"
+                                                               FontSize="14" FontWeight="ExtraBold"
+                                                               Foreground="{DynamicResource ThemeTextBrush}"/>
+                                                    <TextBlock Text="{Binding DayName}"
+                                                               FontSize="10" FontWeight="Bold"
+                                                               Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="{Binding Slots.Count, StringFormat={}{0} слотов с пробными}"
+                                                               FontSize="10" FontWeight="Bold"
+                                                               Foreground="{DynamicResource ThemeTextSubtleBrush}"
+                                                               Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </DockPanel>
+
+                                            <ItemsControl ItemsSource="{Binding Slots}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border CornerRadius="14" Padding="10,8" Margin="0,0,0,8"
+                                                                Cursor="Hand"
+                                                                MouseLeftButtonUp="JournalSlotCard_MouseLeftButtonUp">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Background" Value="#FFF7ED"/>
+                                                                    <Setter Property="BorderBrush" Value="#FDBA74"/>
+                                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                                            <Setter Property="Background" Value="#FED7AA"/>
+                                                                            <Setter Property="BorderBrush" Value="#EA580C"/>
+                                                                            <Setter Property="BorderThickness" Value="2"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <StackPanel>
+                                                                <Grid>
+                                                                    <TextBlock Text="{Binding TimeRangeText}"
+                                                                               FontSize="15" FontWeight="ExtraBold"
+                                                                               Foreground="{DynamicResource ThemeTextBrush}"/>
+                                                                    <Border Background="#F97316" CornerRadius="8"
+                                                                            Padding="6,2" HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Top">
+                                                                        <TextBlock Text="{Binding CountText}"
+                                                                                   FontSize="9" FontWeight="Black"
+                                                                                   Foreground="White"/>
+                                                                    </Border>
+                                                                </Grid>
+                                                                <TextBlock Text="{Binding DirectionName}"
+                                                                           FontSize="12" FontWeight="ExtraBold"
+                                                                           Foreground="{DynamicResource ThemeTextBrush}"
+                                                                           Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                                                <TextBlock Text="{Binding GroupTitle}"
+                                                                           FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                                                                           Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                                                <TextBlock Text="{Binding TeacherName}"
+                                                                           FontSize="10" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                                                           Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                                                <TextBlock Text="{Binding AttendeesText}"
+                                                                           FontSize="10"
+                                                                           Foreground="#9A3412"
+                                                                           Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border x:Name="JournalListBorder" Visibility="Collapsed"
+                                CornerRadius="16" ClipToBounds="True"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                            <DataGrid x:Name="JournalListGrid" Style="{StaticResource ModernDataGridStyle}"
+                                      MinHeight="220" MaxHeight="320"
+                                      MouseLeftButtonUp="JournalListGrid_MouseLeftButtonUp">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ДЕНЬ" Binding="{Binding DayWithDateText}" Width="170"/>
+                                    <DataGridTextColumn Header="ВРЕМЯ" Binding="{Binding TimeRangeText}" Width="110"/>
+                                    <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="1.4*"/>
+                                    <DataGridTextColumn Header="ГРУППА" Binding="{Binding GroupTitle}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="ПРЕПОДАВАТЕЛЬ" Binding="{Binding TeacherName}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="ЗАПИСЕЙ" Binding="{Binding CountText}" Width="100"/>
+                                    <DataGridTextColumn Header="КОГО ЖДЁМ" Binding="{Binding AttendeesText}" Width="2*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+
+                        <TextBlock x:Name="JournalEmptyText"
+                                   Text="На этой неделе пробных записей нет."
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" FontSize="14"
+                                   FontWeight="SemiBold" HorizontalAlignment="Center"
+                                   Margin="0,20,0,20" Visibility="Collapsed"/>
+
+                        <TextBlock x:Name="JournalDetailTitle" Text="СПИСОК ДЛЯ ОБЗВОНА"
+                                   FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,8,0,8"/>
+                        <TextBlock x:Name="JournalDetailHint"
+                                   Text="Кликните по слоту выше, чтобы отфильтровать список, или просмотрите все записи недели"
+                                   FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,8"/>
+                        <Border CornerRadius="16" ClipToBounds="True"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                            <DataGrid x:Name="BookedGrid" Style="{StaticResource ModernDataGridStyle}"
+                                      MinHeight="160" MaxHeight="240"
+                                      MouseDoubleClick="BookedGrid_MouseDoubleClick">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ДАТА / ВРЕМЯ" Binding="{Binding ScheduledText}" Width="130"/>
+                                    <DataGridTextColumn Header="РЕБЁНОК" Binding="{Binding ChildFullName}" Width="1.4*"/>
+                                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding ContactPhone}" Width="130"/>
+                                    <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="ГРУППА" Binding="{Binding GroupTitle}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="ПРЕПОДАВАТЕЛЬ" Binding="{Binding TeacherName}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding ResultText}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                        Padding="14,10" Margin="0,16,0,0" Visibility="Collapsed">
+                    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                               FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,291 @@
+<Window x:Class="VKR.Views.DebtWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Задолженность — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionPrimaryButtonStyle}"/>
+
+        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeGridLineBrush}"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="ColumnHeaderHeight" Value="24"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="MinHeight" Value="420"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="6,0"/>
+        </Style>
+
+        <Style x:Key="DebtRowStyle" TargetType="DataGridRow">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RowToneKey}" Value="fresh">
+                    <Setter Property="Background" Value="#ECFDF5"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RowToneKey}" Value="warning">
+                    <Setter Property="Background" Value="#FEF9C3"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RowToneKey}" Value="critical">
+                    <Setter Property="Background" Value="#FEE2E2"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RowToneKey}" Value="deferred">
+                    <Setter Property="Background" Value="#DBEAFE"/>
+                </DataTrigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E0E7FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Задолженность" FontSize="22" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="28,24,28,32">
+                <Grid Margin="0,0,0,24">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock Text="Дебиторская задолженность" FontSize="32" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock Text="Клиенты с неоплаченным остатком — оплата до 20-го числа следующего месяца"
+                                   FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+
+                <UniformGrid Columns="2" Margin="0,0,0,16">
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="22" Padding="18"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="Общий долг" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="12"/>
+                            <TextBlock x:Name="TotalDebtText" Text="0 ₽" FontSize="22"
+                                       FontWeight="Black" Foreground="{DynamicResource ThemeDangerFgBrush}" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="22" Padding="18"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="8,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Должников" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="12"/>
+                            <TextBlock x:Name="DebtorsCountText" Text="0" FontSize="22"
+                                       FontWeight="Black" Foreground="{DynamicResource ThemeWarningFgBrush}" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <Border Background="#EFF6FF" CornerRadius="16" Padding="16,12"
+                        BorderBrush="#BFDBFE" BorderThickness="1" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Подсветка строк по сроку оплаты (до 20-го след. месяца)"
+                                   FontWeight="ExtraBold" FontSize="13" Foreground="#1D4ED8"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Border Background="#ECFDF5" CornerRadius="10" Padding="10,6" Margin="0,0,8,0"
+                                    BorderBrush="#86EFAC" BorderThickness="1">
+                                <TextBlock Text="ожидает оплаты — зелёная" FontSize="12" FontWeight="SemiBold"/>
+                            </Border>
+                            <Border Background="#DBEAFE" CornerRadius="10" Padding="10,6" Margin="0,0,8,0"
+                                    BorderBrush="#93C5FD" BorderThickness="1">
+                                <TextBlock Text="отсрочка — синяя" FontSize="12" FontWeight="SemiBold"/>
+                            </Border>
+                            <Border Background="#FEF9C3" CornerRadius="10" Padding="10,6" Margin="0,0,8,0"
+                                    BorderBrush="#FDE047" BorderThickness="1">
+                                <TextBlock Text="1–7 дн. просрочки — жёлтая" FontSize="12" FontWeight="SemiBold"/>
+                            </Border>
+                            <Border Background="#FEE2E2" CornerRadius="10" Padding="10,6"
+                                    BorderBrush="#FCA5A5" BorderThickness="1">
+                                <TextBlock Text="более 7 дн. — красная" FontSize="12" FontWeight="SemiBold"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="ПОИСК" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <TextBox x:Name="SearchBox" Style="{StaticResource RoundedTextBoxStyle}"
+                                     TextChanged="SearchBox_TextChanged"
+                                     ToolTip="ФИО, № договора, направление"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="ПОКАЗАТЬ" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="FilterCombo" Height="38"
+                                      SelectionChanged="FilterCombo_SelectionChanged">
+                                <ComboBoxItem Content="Все с долгом" Tag="All" IsSelected="True"/>
+                                <ComboBoxItem Content="Ожидают оплаты" Tag="AwaitingPayment"/>
+                                <ComboBoxItem Content="Просрочка" Tag="Overdue"/>
+                                <ComboBoxItem Content="Отсрочка" Tag="Deferred"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="СОРТИРОВКА" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="SortCombo" Height="38"
+                                      SelectionChanged="SortCombo_SelectionChanged">
+                                <ComboBoxItem Content="Просрочка ↓" Tag="OverdueDesc" IsSelected="True"/>
+                                <ComboBoxItem Content="Просрочка ↑" Tag="OverdueAsc"/>
+                                <ComboBoxItem Content="Остаток ↓" Tag="AmountDesc"/>
+                                <ComboBoxItem Content="Остаток ↑" Tag="AmountAsc"/>
+                                <ComboBoxItem Content="Клиент А → Я" Tag="NameAsc"/>
+                                <ComboBoxItem Content="Клиент Я → А" Tag="NameDesc"/>
+                                <ComboBoxItem Content="Дата долга ↓" Tag="OccurrenceDesc"/>
+                                <ComboBoxItem Content="Дата долга ↑" Tag="OccurrenceAsc"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" ClipToBounds="True"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Padding="0">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Padding="20,14"
+                                BorderBrush="{DynamicResource ThemeGridLineBrush}" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="Список должников" FontSize="15" FontWeight="ExtraBold"
+                                               Foreground="{DynamicResource ThemeTextBrush}"/>
+                                    <TextBlock x:Name="ListCountText"
+                                               Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="11"
+                                               FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button Content="📥  Выгрузить" Style="{StaticResource HeaderButtonStyle}"
+                                            Click="ExportDebt_Click"/>
+                                    <Button Content="📅  Отсрочка" Style="{StaticResource HeaderButtonStyle}"
+                                            Click="DeferDebt_Click"/>
+                                    <Button Content="💬  Заметка" Style="{StaticResource HeaderButtonStyle}"
+                                            Click="AddClientNote_Click"/>
+                                    <Button Content="💳  Принять оплату" Style="{StaticResource PrimaryButtonStyle}"
+                                            Click="RepayDebt_Click"/>
+                                    <Button Content="✓  Погасить полностью" Style="{StaticResource HeaderButtonStyle}"
+                                            Click="RepayDebtFull_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="DebtorsGrid"
+                                  Style="{StaticResource ModernDataGridStyle}"
+                                  RowStyle="{StaticResource DebtRowStyle}"
+                                  MouseDoubleClick="DebtorsGrid_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="СРОК" Binding="{Binding DueDateText}" Width="100"/>
+                                <DataGridTextColumn Header="ДНЕЙ" Binding="{Binding DaysOverdueText}" Width="90"/>
+                                <DataGridTextColumn Header="НАЧИСЛ." Binding="{Binding OccurrenceDateText}" Width="100"/>
+                                <DataGridTextColumn Header="ПЕРИОД" Binding="{Binding PeriodText}" Width="170"/>
+                                <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding StudentFullName}" Width="1.6*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="№ ДОГ." Binding="{Binding ContractNumber}" Width="90"/>
+                                <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionDisplayText}" Width="1.2*"/>
+                                <DataGridTextColumn Header="ДОЛГ" Binding="{Binding DebtAmountText}" Width="110"/>
+                                <DataGridTextColumn Header="ОПЛАЧЕНО" Binding="{Binding PaidAmountText}" Width="110"/>
+                                <DataGridTextColumn Header="ОСТАТОК" Binding="{Binding OutstandingText}" Width="110">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="#9F1239"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="СТАТУС" Binding="{Binding OverdueLevelText}" Width="90"/>
+                                <DataGridTextColumn Header="КОММЕНТАРИЙ" Binding="{Binding DeferInfoText}" Width="1.2*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Border>
+
+                <TextBlock x:Name="EmptyText"
+                           Text="Открытых задолженностей нет."
+                           Foreground="{DynamicResource ThemeTextSubtleBrush}" FontSize="14"
+                           FontWeight="SemiBold" HorizontalAlignment="Center"
+                           Margin="0,20,0,0" Visibility="Collapsed"/>
+
+                <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                        Padding="14,10" Margin="0,16,0,0" Visibility="Collapsed">
+                    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                               FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,36 @@
+Информационная система «Арт-студия»
+====================================
+
+Нужны Windows, PostgreSQL и Visual Studio с .NET SDK 8
+(нагрузка «Разработка классических приложений .NET»).
+
+1. Запустите службу PostgreSQL.
+2. Создайте пустую базу art_studio.
+   В psql или pgAdmin:
+
+   CREATE DATABASE art_studio;
+
+3. Накатите схему из файла database\schema.sql в эту базу.
+4. Скопируйте файл
+
+   VKR\appsettings.Development.json.example
+
+   в
+
+   VKR\appsettings.Development.json
+
+   и вместо YOUR_PASSWORD_HERE впишите пароль пользователя PostgreSQL.
+   Файл с паролем в git не кладётся.
+5. Откройте VKR\VKR.slnx в Visual Studio и нажмите F5.
+
+   Другой способ из этой папки:
+
+   dotnet run --project VKR\VKR.csproj
+
+Вход на пустой базе, где ещё нет пользователей:
+
+   логин:  admin
+   пароль: Studio123
+
+Это пароль только локальной демонстрационной базы. После входа его лучше сменить.
+Реальные карточки учеников и клиентов в проект не кладите.

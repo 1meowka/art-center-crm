@@ -1,0 +1,161 @@
+<Window x:Class="VKR.Views.MaxBotBroadcastWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Рассылка MAX — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="SmallButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}">
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+        <Style x:Key="PanelCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeGridLineBrush}"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="ColumnHeaderHeight" Value="24"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+        </Style>
+        <Style x:Key="SidebarListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="📤" FontSize="28" Margin="0,0,14,0"/>
+                    <StackPanel>
+                        <TextBlock Text="РАССЫЛКА MAX" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Шаблоны и массовые сообщения" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="SettingsButton" Content="⚙  Настройки бота"
+                            Style="{StaticResource SectionHeaderButtonStyle}" Click="Settings_Click"/>
+                    <Button Content="← Назад" Style="{StaticResource SectionHeaderButtonStyle}" Click="Back_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="28,20,28,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource PanelCardStyle}">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="ПАПКИ" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,10"/>
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,12,0,0">
+                        <Button Content="＋" Style="{StaticResource SmallButtonStyle}" Click="AddFolder_Click"/>
+                        <Button Content="✎" Style="{StaticResource SmallButtonStyle}" Click="RenameFolder_Click"/>
+                        <Button Content="🗑" Style="{StaticResource SmallButtonStyle}" Click="DeleteFolder_Click"/>
+                    </StackPanel>
+                    <ListBox x:Name="FoldersList" Style="{StaticResource SidebarListBoxStyle}"
+                             ItemContainerStyle="{StaticResource SectionListBoxItemStyle}"
+                             DisplayMemberPath="Name" SelectionChanged="FoldersList_SelectionChanged"/>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource PanelCardStyle}">
+                <DockPanel>
+                    <TextBlock x:Name="TemplatesHeaderText" DockPanel.Dock="Top" Text="ШАБЛОНЫ"
+                               FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,10"/>
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,12,0,0">
+                        <Button Content="＋" Style="{StaticResource SmallButtonStyle}" Click="AddTemplate_Click"/>
+                        <Button Content="✎" Style="{StaticResource SmallButtonStyle}" Click="EditTemplate_Click"/>
+                        <Button Content="🗑" Style="{StaticResource SmallButtonStyle}" Click="DeleteTemplate_Click"/>
+                    </StackPanel>
+                    <ListBox x:Name="TemplatesList" Style="{StaticResource SidebarListBoxStyle}"
+                             ItemContainerStyle="{StaticResource SectionListBoxItemStyle}"
+                             DisplayMemberPath="Title" SelectionChanged="TemplatesList_SelectionChanged"/>
+                </DockPanel>
+            </Border>
+
+            <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Style="{StaticResource PanelCardStyle}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock x:Name="ConfigStatusText" FontSize="13" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <Border Background="#FFF7ED" CornerRadius="12" Padding="12,10" Margin="0,0,0,16"
+                                    BorderBrush="#FDBA74" BorderThickness="1">
+                                <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#9A3412">
+                                    <Run FontWeight="Bold">Правила MAX:</Run>
+                                    <Run> массовые рекламные и маркетинговые рассылки через API запрещены. Используйте рассылку только для сервисных сообщений (напоминания о занятиях, оплате, расписании). Праздничные поздравления — по одному получателю или с согласия клиента.</Run>
+                                </TextBlock>
+                            </Border>
+                            <TextBlock Text="ТЕКСТ СООБЩЕНИЯ" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <TextBox x:Name="MessageTextBox" MinHeight="160" Padding="14,10" FontSize="13"
+                                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                                     BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,0,16"/>
+                            <TextBlock Text="КОМУ ОТПРАВИТЬ" FontSize="11" FontWeight="Black"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                            <ComboBox x:Name="AudienceCombo" Height="42" FontSize="13"
+                                      VerticalContentAlignment="Center" Margin="0,0,0,10"
+                                      SelectionChanged="AudienceCombo_SelectionChanged"/>
+                            <StackPanel x:Name="SingleRecipientPanel" Visibility="Collapsed" Margin="0,0,0,10">
+                                <TextBlock Text="ПОЛУЧАТЕЛЬ" FontSize="11" FontWeight="Black"
+                                           Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                                <ComboBox x:Name="SubscriberCombo" Height="42" FontSize="13"
+                                          VerticalContentAlignment="Center"
+                                          DisplayMemberPath="DisplayName" SelectedValuePath="IdSubscriber"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Button Content="📤  Отправить в MAX"
+                                        Style="{StaticResource SectionPrimaryButtonStyle}" Click="Send_Click"/>
+                                <Button Content="👥  Подписчики" Style="{StaticResource SectionHeaderButtonStyle}"
+                                        Click="Subscribers_Click"/>
+                                <TextBlock x:Name="ProgressText" VerticalAlignment="Center" Margin="16,0,0,0"
+                                           Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}"
+                            CornerRadius="14" Padding="14,10" Margin="0,0,0,16" Visibility="Collapsed">
+                        <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                                   TextWrapping="Wrap" FontWeight="SemiBold"/>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

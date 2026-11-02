@@ -1,0 +1,467 @@
+<Window x:Class="VKR.Views.LoginWindow"
+
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+        xmlns:rules="clr-namespace:VKR.Utilities"
+
+        Title="Арт-студия — Авторизация"
+
+        WindowState="Maximized"
+
+        WindowStyle="None"
+
+        ResizeMode="CanResize"
+
+        Background="{DynamicResource ThemeBgBrush}"
+
+        FontFamily="Segoe UI">
+
+
+
+    <Window.Resources>
+
+        <!-- На окне входа — свои поля, без двойной рамки из AppStyles -->
+
+        <Style TargetType="TextBox">
+
+            <Setter Property="Height" Value="44"/>
+
+            <Setter Property="Padding" Value="14,0"/>
+
+            <Setter Property="FontSize" Value="14"/>
+
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+            <Setter Property="Background" Value="Transparent"/>
+
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="rules:InputRules.AutoCapitalize" Value="False"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="TextBox">
+
+                        <ScrollViewer x:Name="PART_ContentHost"
+
+                                      Margin="{TemplateBinding Padding}"
+
+                                      VerticalAlignment="Center"/>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+
+
+        <Style TargetType="PasswordBox">
+
+            <Setter Property="Height" Value="44"/>
+
+            <Setter Property="Padding" Value="14,0"/>
+
+            <Setter Property="FontSize" Value="14"/>
+
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+            <Setter Property="Background" Value="Transparent"/>
+
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="PasswordBox">
+
+                        <ScrollViewer x:Name="PART_ContentHost"
+
+                                      Margin="{TemplateBinding Padding}"
+
+                                      VerticalAlignment="Center"/>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+
+
+        <Style x:Key="ShowPasswordButtonStyle" TargetType="Button">
+
+            <Setter Property="Width" Value="44"/>
+
+            <Setter Property="Height" Value="44"/>
+
+            <Setter Property="Padding" Value="0"/>
+
+            <Setter Property="Margin" Value="0"/>
+
+            <Setter Property="Background" Value="Transparent"/>
+
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="Button">
+
+                        <Border Background="Transparent">
+
+                            <ContentPresenter HorizontalAlignment="Center"
+
+                                              VerticalAlignment="Center"/>
+
+                        </Border>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
+
+
+    <Grid>
+
+        <!-- Кнопки свернуть / выход в правом верхнем углу -->
+
+        <StackPanel Orientation="Horizontal"
+
+                    HorizontalAlignment="Right" VerticalAlignment="Top"
+
+                    Margin="0,20,20,0">
+
+        <Button Width="130" Height="42"
+
+                Margin="0,0,8,0"
+
+                Background="{DynamicResource ThemeSurfaceBrush}"
+
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+
+                Foreground="{DynamicResource ThemeTextBrush}"
+
+                FontWeight="Bold" FontSize="13"
+
+                Cursor="Hand"
+
+                Click="MinimizeButton_Click"
+
+                ToolTip="Свернуть окно в панель задач">
+
+            <Button.Template>
+
+                <ControlTemplate TargetType="Button">
+
+                    <Border Background="{TemplateBinding Background}"
+
+                            BorderBrush="{TemplateBinding BorderBrush}"
+
+                            BorderThickness="{TemplateBinding BorderThickness}"
+
+                            CornerRadius="16">
+
+                        <StackPanel Orientation="Horizontal" 
+
+                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            <TextBlock Text="—" Margin="0,0,6,0" FontSize="14"/>
+
+                            <TextBlock Text="Свернуть"/>
+
+                        </StackPanel>
+
+                    </Border>
+
+                </ControlTemplate>
+
+            </Button.Template>
+
+        </Button>
+
+        <Button Width="110" Height="42"
+
+                Background="{DynamicResource ThemeSurfaceBrush}"
+
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+
+                Foreground="{DynamicResource ThemeTextBrush}"
+
+                FontWeight="Bold" FontSize="13"
+
+                Cursor="Hand"
+
+                Click="ExitButton_Click">
+
+            <Button.Template>
+
+                <ControlTemplate TargetType="Button">
+
+                    <Border Background="{TemplateBinding Background}"
+
+                            BorderBrush="{TemplateBinding BorderBrush}"
+
+                            BorderThickness="{TemplateBinding BorderThickness}"
+
+                            CornerRadius="16">
+
+                        <StackPanel Orientation="Horizontal" 
+
+                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            <TextBlock Text="✕" Margin="0,0,6,0" FontSize="14"/>
+
+                            <TextBlock Text="Выход"/>
+
+                        </StackPanel>
+
+                    </Border>
+
+                </ControlTemplate>
+
+            </Button.Template>
+
+        </Button>
+
+        </StackPanel>
+
+
+
+        <!-- Карточка авторизации -->
+
+        <Border Width="440" 
+
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+
+                Background="{DynamicResource ThemeSurfaceBrush}"
+
+                CornerRadius="28"
+
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+
+            <Border.Effect>
+
+                <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="32" 
+
+                                  ShadowDepth="12" Opacity="0.08"/>
+
+            </Border.Effect>
+
+
+
+            <StackPanel Margin="40,36,40,36">
+
+                <!-- Логотип -->
+
+                <Image Source="/Resources/logo.png" 
+
+                       Width="160" Height="160"
+
+                       HorizontalAlignment="Center"
+
+                       Margin="0,0,0,16"
+
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+
+
+
+                <!-- Заголовки -->
+
+                <TextBlock Text="Арт-студия"
+
+                           FontSize="20" FontWeight="Bold"
+
+                           Foreground="{DynamicResource ThemeTextBrush}"
+
+                           HorizontalAlignment="Center" Margin="0,0,0,2"/>
+
+                <TextBlock Text="Интеллектуальная информационная система"
+
+                           FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}"
+
+                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock Text="Вход в систему"
+
+                           FontSize="16" FontWeight="SemiBold"
+
+                           Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+
+                           HorizontalAlignment="Center" Margin="0,0,0,24"/>
+
+
+
+                <!-- Логин -->
+
+                <TextBlock Text="Логин" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+
+                           FontSize="12" FontWeight="Bold" Margin="0,0,0,6"/>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="14"
+
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+
+                    <TextBox x:Name="LoginTextBox"/>
+
+                </Border>
+
+
+
+                <!-- Пароль -->
+
+                <TextBlock Text="Пароль" Foreground="{DynamicResource ThemeTextMutedBrush}" 
+
+                           FontSize="12" FontWeight="Bold" Margin="0,16,0,6"/>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="14"
+
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+
+                        ClipToBounds="False">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="*"/>
+
+                            <ColumnDefinition Width="Auto"/>
+
+                        </Grid.ColumnDefinitions>
+
+
+
+                        <!-- Скрытый пароль -->
+
+                        <PasswordBox x:Name="PasswordBox"
+
+                                     Grid.Column="0"/>
+
+
+
+                        <!-- Видимый пароль -->
+
+                        <TextBox x:Name="PasswordTextBox"
+
+                                 Grid.Column="0"
+
+                                 Visibility="Collapsed"/>
+
+
+
+                        <!-- Кнопка глаза -->
+
+                        <Button x:Name="ShowPasswordButton"
+
+                                Grid.Column="1"
+
+                                Style="{StaticResource ShowPasswordButtonStyle}"
+
+                                PreviewMouseLeftButtonDown="ShowPassword_Press"
+
+                                PreviewMouseLeftButtonUp="ShowPassword_Release"
+
+                                MouseLeave="ShowPassword_Release"
+
+                                ToolTip="Удерживайте, чтобы показать пароль">
+
+                            <TextBlock x:Name="EyeIconText" Text="👁" FontSize="16"/>
+
+                        </Button>
+
+                    </Grid>
+
+                </Border>
+
+
+
+                <!-- Сообщение об ошибке -->
+
+                <Border x:Name="ErrorBorder"
+
+                        Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="14"
+
+                        Padding="12,10" Margin="0,16,0,0"
+
+                        Visibility="Collapsed">
+
+                    <TextBlock x:Name="ErrorTextBlock"
+
+                               Foreground="{DynamicResource ThemeDangerFgBrush}" FontSize="12" FontWeight="SemiBold"
+
+                               TextWrapping="Wrap"/>
+
+                </Border>
+
+
+
+                <!-- Кнопка входа -->
+
+                <Button x:Name="LoginButton"
+
+                        Content="ВОЙТИ В СИСТЕМУ"
+
+                        Height="48" Margin="0,24,0,0"
+
+                        Background="{DynamicResource ThemePrimaryBrush}" Foreground="{DynamicResource ThemeOnPrimaryBrush}"
+
+                        FontSize="14" FontWeight="Bold"
+
+                        BorderThickness="0" Cursor="Hand"
+
+                        Click="LoginButton_Click">
+
+                    <Button.Template>
+
+                        <ControlTemplate TargetType="Button">
+
+                            <Border Background="{TemplateBinding Background}"
+
+                                    CornerRadius="16">
+
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"
+                                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+
+                            </Border>
+
+                        </ControlTemplate>
+
+                    </Button.Template>
+
+                </Button>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</Window>
+
+

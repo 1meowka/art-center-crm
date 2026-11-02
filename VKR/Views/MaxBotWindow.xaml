@@ -1,0 +1,102 @@
+<Window x:Class="VKR.Views.MaxBotWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Чат-бот MAX — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="💬" FontSize="28" Margin="0,0,14,0"/>
+                    <StackPanel>
+                        <TextBlock Text="ЧАТ-БОТ MAX" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Рассылки и переписка с клиентами" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="SettingsButton" Content="⚙  Настройки бота"
+                            Style="{StaticResource SectionHeaderButtonStyle}" Click="Settings_Click"/>
+                    <Button Content="← Назад" Style="{StaticResource SectionHeaderButtonStyle}" Click="Back_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="28,32,28,32">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="ConfigStatusText" Grid.Row="0" FontSize="14" FontWeight="SemiBold"
+                       Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,0,0,16"
+                       HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+
+            <UniformGrid Grid.Row="1" Columns="2" HorizontalAlignment="Center" VerticalAlignment="Top"
+                         MaxWidth="920" Margin="0,0,0,24">
+                <Button Style="{StaticResource MaxBotHubTileStyle}" Margin="12" Click="Broadcast_Click">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="📤" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                        <TextBlock Text="Рассылка" FontSize="24" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Шаблоны по папкам и отправка&#x0a;сообщений подписчикам"
+                                   FontSize="14" TextAlignment="Center" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource MaxBotHubTileStyle}" Margin="12" Click="Chat_Click">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="💬" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                        <TextBlock Text="Чат с клиентами" FontSize="24" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Ответы на вопросы клиентов&#x0a;из программы (бесплатно, без сайта)"
+                                   FontSize="14" TextAlignment="Center" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+
+            <Border Grid.Row="2" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20"
+                    BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Padding="20" MaxWidth="920" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="КОМАНДЫ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ В MAX" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                    <TextBlock Text="Бот автоматически отвечает на команды ниже. Заполните юридические поля в «Настройки бота» перед модерацией."
+                               FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <ItemsControl x:Name="CommandsList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="12"
+                                        Padding="12,10" Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Command}" FontWeight="Bold" FontSize="13"
+                                                   Foreground="{DynamicResource ThemePrimaryBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Preview}" FontSize="12"
+                                                   TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

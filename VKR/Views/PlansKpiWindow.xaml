@@ -1,0 +1,480 @@
+<Window x:Class="VKR.Views.PlansKpiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dgc="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+        Title="Планы и KPI — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="14"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MiniIconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E2E8F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PanelCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="24" ShadowDepth="8" Opacity="0.06"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="KpiMetricCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="KpiLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style x:Key="KpiValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="ExtraBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="Margin" Value="0,4,0,0"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style x:Key="KpiSubStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style x:Key="KpiProgressStyle" TargetType="ProgressBar">
+            <Setter Property="Height" Value="5"/>
+            <Setter Property="Margin" Value="0,8,0,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Background" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style x:Key="DataGridColumnHeaderStyle" TargetType="dgc:DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EEF2F7"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+            <Setter Property="CanUserResizeColumns" Value="True"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="ColumnHeaderStyle" Value="{StaticResource DataGridColumnHeaderStyle}"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource ThemeSurfaceBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Планы и KPI" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="🔄  Рассчитать KPI"
+                            Style="{StaticResource HeaderButtonStyle}"
+                            Click="CalculateButton_Click"/>
+                    <Button Content="➕  Добавить план"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="AddPlanButton_Click"/>
+                    <Button Content="← Назад"
+                            Style="{StaticResource HeaderButtonStyle}"
+                            Click="CloseButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Основной контент -->
+        <Grid Grid.Row="1" Margin="28,20,28,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок страницы -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBlock Text="Контроль плановых показателей"
+                               FontSize="28" FontWeight="ExtraBold"
+                               Foreground="{DynamicResource ThemeTextBrush}"/>
+                    <TextBlock x:Name="PeriodSummaryText"
+                               Text="Период не выбран"
+                               FontSize="13"
+                               Foreground="{DynamicResource ThemeTextMutedBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Фильтр периода -->
+            <Border Grid.Row="1" Style="{StaticResource PanelCardStyle}" Padding="16,14" Margin="0,0,0,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="С ДАТЫ" Style="{StaticResource KpiLabelStyle}" Margin="0,0,0,6"/>
+                        <DatePicker x:Name="StartDatePicker" Height="36"
+                                    BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                    Background="{DynamicResource ThemeSurfaceBrush}"
+                                    SelectedDateFormat="Short"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="ПО ДАТУ" Style="{StaticResource KpiLabelStyle}" Margin="0,0,0,6"/>
+                        <DatePicker x:Name="EndDatePicker" Height="36"
+                                    BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                    Background="{DynamicResource ThemeSurfaceBrush}"
+                                    SelectedDateFormat="Short"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="3"
+                               VerticalAlignment="Center"
+                               Margin="16,0,0,0"
+                               Text="Выберите период и нажмите «Применить», затем выберите план слева для сравнения с фактом."
+                               FontSize="12"
+                               Foreground="{DynamicResource ThemeTextMutedBrush}"
+                               TextWrapping="Wrap"/>
+
+                    <Button Grid.Column="4"
+                            Content="Применить"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="ApplyDateFilter_Click"
+                            VerticalAlignment="Bottom"/>
+                </Grid>
+            </Border>
+
+            <!-- KPI-карточки -->
+            <UniformGrid Grid.Row="2" Columns="6" Margin="0,0,0,14">
+
+                <Border Style="{StaticResource KpiMetricCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="ЗАЯВКИ" Style="{StaticResource KpiLabelStyle}"/>
+                        <TextBlock x:Name="LeadsValueText" Text="—" Style="{StaticResource KpiValueStyle}"/>
+                        <TextBlock x:Name="LeadsStatusText" Text="план / факт" Style="{StaticResource KpiSubStyle}"/>
+                        <ProgressBar x:Name="LeadsProgressBar" Style="{StaticResource KpiProgressStyle}" Maximum="100" Value="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource KpiMetricCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="НОВЫЕ ОБУЧАЮЩИЕСЯ" Style="{StaticResource KpiLabelStyle}"/>
+                        <TextBlock x:Name="StudentsValueText" Text="—" Style="{StaticResource KpiValueStyle}"/>
+                        <TextBlock x:Name="StudentsStatusText" Text="план / факт" Style="{StaticResource KpiSubStyle}"/>
+                        <ProgressBar x:Name="StudentsProgressBar" Style="{StaticResource KpiProgressStyle}" Maximum="100" Value="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource KpiMetricCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="ДОГОВОРЫ" Style="{StaticResource KpiLabelStyle}"/>
+                        <TextBlock x:Name="ContractsValueText" Text="—" Style="{StaticResource KpiValueStyle}"/>
+                        <TextBlock x:Name="ContractsStatusText" Text="план / факт" Style="{StaticResource KpiSubStyle}"/>
+                        <ProgressBar x:Name="ContractsProgressBar" Style="{StaticResource KpiProgressStyle}" Maximum="100" Value="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource KpiMetricCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="ВЫРУЧКА" Style="{StaticResource KpiLabelStyle}"/>
+                        <TextBlock x:Name="RevenueValueText" Text="—" Style="{StaticResource KpiValueStyle}"/>
+                        <TextBlock x:Name="RevenueStatusText" Text="план / факт" Style="{StaticResource KpiSubStyle}"/>
+                        <ProgressBar x:Name="RevenueProgressBar" Style="{StaticResource KpiProgressStyle}" Maximum="100" Value="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource KpiMetricCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="ПОСЕЩАЕМОСТЬ" Style="{StaticResource KpiLabelStyle}"/>
+                        <TextBlock x:Name="AttendanceValueText" Text="—" Style="{StaticResource KpiValueStyle}"/>
+                        <TextBlock x:Name="AttendanceStatusText" Text="—" Style="{StaticResource KpiSubStyle}"/>
+                        <ProgressBar x:Name="AttendanceProgressBar" Style="{StaticResource KpiProgressStyle}" Maximum="100" Value="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource KpiMetricCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="ОТТОК" Style="{StaticResource KpiLabelStyle}"/>
+                        <TextBlock x:Name="ChurnValueText" Text="—" Style="{StaticResource KpiValueStyle}"/>
+                        <TextBlock x:Name="ChurnStatusText" Text="—" Style="{StaticResource KpiSubStyle}"/>
+                        <ProgressBar x:Name="ChurnProgressBar" Style="{StaticResource KpiProgressStyle}" Maximum="100" Value="0"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Низ: планы + таблица -->
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Планы -->
+                <Border Grid.Column="0" Style="{StaticResource PanelCardStyle}">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Padding="16,14"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+                            <StackPanel>
+                                <TextBlock Text="Планы KPI" FontSize="15" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock x:Name="PlansCountText" Text="найдено: 0"
+                                           FontSize="11" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           FontWeight="SemiBold" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <ListBox x:Name="PlansListBox"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 SelectionChanged="PlansListBox_SelectionChanged">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="Bd" Background="Transparent" Padding="12,10"
+                                                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                                        BorderThickness="0,0,0,1">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="#EEF2FF"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding PlanName}"
+                                                       FontWeight="Bold" FontSize="13"
+                                                       Foreground="{DynamicResource ThemeTextBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock FontSize="11" Foreground="{DynamicResource ThemeTextMutedBrush}">
+                                                <Run Text="{Binding PeriodStart, StringFormat={}{0:dd.MM.yyyy}}"/>
+                                                <Run Text=" — "/>
+                                                <Run Text="{Binding PeriodEnd, StringFormat={}{0:dd.MM.yyyy}}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Button Content="✎"
+                                                    Style="{StaticResource MiniIconButtonStyle}"
+                                                    Tag="{Binding}"
+                                                    Click="EditPlan_Click"/>
+                                            <Button Content="🗑"
+                                                    Style="{StaticResource MiniIconButtonStyle}"
+                                                    Tag="{Binding}"
+                                                    Click="DeletePlan_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
+
+                <!-- Таблица KPI -->
+                <Border Grid.Column="2" Style="{StaticResource PanelCardStyle}">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Padding="16,14"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+                            <StackPanel>
+                                <TextBlock Text="Детализация: план / факт"
+                                           FontSize="15" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Полная таблица показателей с процентом выполнения и статусом"
+                                           FontSize="11" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <DataGrid x:Name="KpiResultsGrid"
+                                  Style="{StaticResource DataGridStyle}"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Показатель" Binding="{Binding IndicatorName}" Width="*"/>
+                                <DataGridTextColumn Header="План" Binding="{Binding PlanValue}" Width="110"/>
+                                <DataGridTextColumn Header="Факт" Binding="{Binding FactValue}" Width="110"/>
+                                <DataGridTextColumn Header="%" Binding="{Binding CompletionPercent, StringFormat={}{0:F0}}" Width="70"/>
+                                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="130"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="3" Grid.ColumnSpan="3"
+                    x:Name="ErrorBorder"
+                    VerticalAlignment="Bottom"
+                    Background="{DynamicResource ThemeDangerBgBrush}"
+                    CornerRadius="12" Padding="12,10"
+                    Visibility="Collapsed">
+                <TextBlock x:Name="ErrorMessageText"
+                           Foreground="{DynamicResource ThemeDangerFgBrush}"
+                           FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

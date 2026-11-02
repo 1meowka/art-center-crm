@@ -1,0 +1,219 @@
+<Window x:Class="VKR.Views.StudentCardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Карточка обучающегося"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionPrimaryButtonStyle}"/>
+
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeGridLineBrush}"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="ColumnHeaderHeight" Value="24"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource ThemeSurfaceBrush}"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="6,0"/>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="16,10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="КАРТОЧКА" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="TitleText" Text="Обучающийся" FontSize="22" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                        <TextBlock x:Name="SubtitleText" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                   FontSize="13" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Закрыть" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="Close_Click"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <TabControl Margin="28,20,28,20">
+                <TabItem Header="Профиль">
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <TextBlock Text="Основная информация" FontSize="18" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,14"/>
+                                <UniformGrid Columns="2" Rows="11">
+                                    <TextBlock Text="ФИО" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="FioText" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Дата рождения" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="BirthText"/>
+                                    <TextBlock Text="Свидетельство о рождении" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="BirthCertificateText" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Возраст" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="AgeText"/>
+                                    <TextBlock Text="Категория" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="MinorText"/>
+                                    <TextBlock Text="Телефон" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="PhoneText"/>
+                                    <TextBlock Text="Email" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="EmailText"/>
+                                    <TextBlock Text="Адрес проживания" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="ResidenceAddressText" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Статус" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="StatusText"/>
+                                    <TextBlock Text="Тип" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="TypeText"/>
+                                    <TextBlock Text="В системе с" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="CreatedText"/>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <TextBlock Text="Обучение" FontSize="18" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,14"/>
+                                <UniformGrid Columns="2" Rows="4">
+                                    <TextBlock Text="Дата прихода" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="ArrivalText"/>
+                                    <TextBlock Text="Учебное заведение" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="InstitutionText" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Школа" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="SchoolText"/>
+                                    <TextBlock Text="Комментарий" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                                    <TextBlock x:Name="CommentText" TextWrapping="Wrap"/>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Представители">
+                    <Border Style="{StaticResource Card}" Margin="0,16,0,0" MinHeight="360">
+                        <DataGrid x:Name="RepresentativesGrid" Style="{StaticResource ModernDataGridStyle}"
+                                  MouseDoubleClick="RepresentativesGrid_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding RepresentativeFullName}" Width="2*"/>
+                                <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="*"/>
+                                <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="*"/>
+                                <DataGridTextColumn Header="АДРЕС" Binding="{Binding ResidenceAddress}" Width="1.5*"/>
+                                <DataGridTextColumn Header="РОДСТВО" Binding="{Binding RelationName}" Width="*"/>
+                                <DataGridTextColumn Header="ПЛАТЕЛЬЩИК" Binding="{Binding MainPayerText}" Width="150"/>
+                                <DataGridTextColumn Header="ЗАКОННЫЙ" Binding="{Binding LegalText}" Width="160"/>
+                                <DataGridTextColumn Header="КОММЕНТАРИЙ" Binding="{Binding Note}" Width="2*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </TabItem>
+
+                <TabItem Header="Группы">
+                    <Border Style="{StaticResource Card}" Margin="0,16,0,0" MinHeight="360">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                                        HorizontalAlignment="Right" Margin="0,14,0,0">
+                                <Button Content="Зачислить / перевести в группу"
+                                        Click="TransferToGroup_Click"
+                                        Style="{StaticResource PrimaryButtonStyle}"/>
+                            </StackPanel>
+                            <DataGrid x:Name="GroupsGrid" Style="{StaticResource ModernDataGridStyle}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ГРУППА" Binding="{Binding GroupDisplay}" Width="1.4*"/>
+                                    <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="1.4*"/>
+                                    <DataGridTextColumn Header="ПРЕПОДАВАТЕЛЬ" Binding="{Binding TeacherName}" Width="1.6*"/>
+                                    <DataGridTextColumn Header="ПЕРИОД ПО ДОГОВОРУ" Binding="{Binding PeriodText}" Width="1.8*"/>
+                                    <DataGridTextColumn Header="№ ДОГОВОРА" Binding="{Binding ContractNumberText}" Width="120"/>
+                                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding StatusText}" Width="110"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </Border>
+                </TabItem>
+
+                <TabItem Header="Договоры">
+                    <Border Style="{StaticResource Card}" Margin="0,16,0,0" MinHeight="360">
+                        <DataGrid x:Name="ContractsGrid" Style="{StaticResource ModernDataGridStyle}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="НОМЕР" Binding="{Binding ContractNumber}" Width="130"/>
+                                <DataGridTextColumn Header="ДАТА" Binding="{Binding ContractDate, StringFormat=dd.MM.yyyy}" Width="100"/>
+                                <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="2*"/>
+                                <DataGridTextColumn Header="СУММА" Binding="{Binding AmountText}" Width="120"/>
+                                <DataGridTextColumn Header="СТАТУС" Binding="{Binding Status}" Width="120"/>
+                                <DataGridTextColumn Header="ОКОНЧАНИЕ" Binding="{Binding EndDate, StringFormat=dd.MM.yyyy}" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </TabItem>
+
+                <TabItem Header="Заметки">
+                    <StackPanel Margin="0,16,0,0">
+                        <Button Content="➕  Добавить заметку" HorizontalAlignment="Left"
+                                Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,0,12"
+                                Click="AddNote_Click"/>
+                        <Border Style="{StaticResource Card}" MinHeight="320">
+                            <DataGrid x:Name="ContactsGrid" Style="{StaticResource ModernDataGridStyle}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ДАТА" Binding="{Binding ContactDate, StringFormat=dd.MM.yyyy HH:mm}" Width="150"/>
+                                    <DataGridTextColumn Header="АВТОР" Binding="{Binding ManagerName}" Width="140"/>
+                                    <DataGridTextColumn Header="ЗАМЕТКА" Binding="{Binding Comment}" Width="2*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" x:Name="ErrorBorder" Background="#FF6B6B" Margin="28,0,28,16"
+                Padding="16,12" Visibility="Collapsed">
+            <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                       FontWeight="SemiBold" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>

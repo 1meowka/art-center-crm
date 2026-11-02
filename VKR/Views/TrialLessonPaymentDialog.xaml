@@ -1,0 +1,76 @@
+<Window x:Class="VKR.Views.TrialLessonPaymentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Оплата пробного"
+        Width="560" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None" ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        FontFamily="Segoe UI">
+
+    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Margin="12"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+        <StackPanel Margin="28">
+            <TextBlock Text="Запись на пробное" FontSize="22" FontWeight="ExtraBold"
+                       Foreground="{DynamicResource ThemeTextBrush}"/>
+            <TextBlock x:Name="LeadSummaryText" Margin="0,6,0,4"
+                       Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"/>
+            <TextBlock x:Name="SlotSummaryText" Margin="0,0,0,16"
+                       Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"/>
+
+            <CheckBox x:Name="FreeCheckBox" Content="Бесплатное пробное занятие"
+                      FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
+                      Checked="FreeCheckBox_Changed" Unchecked="FreeCheckBox_Changed"/>
+
+            <Border x:Name="AmountPanel" Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="СУММА К ОПЛАТЕ" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                    <Grid Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="AmountBox" Height="42" FontSize="20" FontWeight="Bold"
+                                 VerticalContentAlignment="Center" Padding="12,0"
+                                 TextChanged="AmountBox_TextChanged"/>
+                        <TextBlock Grid.Column="1" Text="₽" FontSize="20" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="12,0,0,0"/>
+                    </Grid>
+                    <TextBlock Text="По умолчанию 200 ₽ — можно изменить" FontSize="12"
+                               Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel x:Name="PaymentMethodPanel" Margin="0,0,0,14">
+                <TextBlock FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6">
+                    <Run Text="СПОСОБ ОПЛАТЫ"/>
+                </TextBlock>
+                <ComboBox x:Name="PaymentMethodCombo" Height="42" FontSize="13"
+                          DisplayMemberPath="Name" SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <Border Background="#FFE066" CornerRadius="12" Padding="14,10" Margin="0,0,0,14">
+                <TextBlock FontSize="12" Foreground="{DynamicResource ThemeWarningFgBrush}" TextWrapping="Wrap"
+                           Text="Платное пробное отразится в «Продажах». Бесплатное — только запись в журнал пробных, без продажи."/>
+            </Border>
+
+            <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                    Padding="14,10" Visibility="Collapsed">
+                <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                           FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="Отмена" Width="120" Height="42" Margin="0,0,8,0"
+                        Style="{StaticResource SectionHeaderButtonStyle}"
+                        Click="Cancel_Click"/>
+                <Button x:Name="SaveButton" Content="Записать" Width="180" Height="42"
+                        Style="{StaticResource SectionPrimaryButtonStyle}"
+                        Click="Save_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
+

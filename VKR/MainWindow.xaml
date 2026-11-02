@@ -1,0 +1,997 @@
+<Window x:Class="VKR.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:VKR.Views"
+        Title="ИИС Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <!-- Стиль кнопок бокового меню -->
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,1,0,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" 
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="18"
+                                Padding="10,0">
+                            <ContentPresenter VerticalAlignment="Center" 
+                                              HorizontalAlignment="Left"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Активная кнопка меню -->
+        <Style x:Key="MenuButtonActiveStyle" TargetType="Button" BasedOn="{StaticResource MenuButtonStyle}">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="18" Padding="10,0">
+                            <ContentPresenter VerticalAlignment="Center" 
+                                              HorizontalAlignment="Left"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль кнопок шапки (контурные) -->
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="16"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль "тёмной" кнопки выхода с правильным hover -->
+        <Style x:Key="DarkButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                        CornerRadius="16" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryPressedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль цветного кружка-иконки в меню -->
+        <Style x:Key="MenuIconStyle" TargetType="Border">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Карточки и диаграммы главной страницы -->
+        <Style x:Key="DashboardCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="28"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Effect" Value="{DynamicResource ThemeCardShadowEffect}"/>
+        </Style>
+
+        <Style x:Key="SmallLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMutedBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style x:Key="KpiValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="Margin" Value="0,8,0,4"/>
+        </Style>
+
+        <Style x:Key="PeriodApplyButtonStyle" TargetType="Button" BasedOn="{StaticResource DarkButtonStyle}">
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="Margin" Value="8,0,0,0"/>
+        </Style>
+
+        <!-- Стиль ComboBox блока «Период». Базируется на implicit-стиле ComboBox из AppStyles.xaml,
+             но переопределяет Height/Padding/FontSize, чтобы строка «Период / список / кнопка»
+             выглядела одинаково и в дизайнере, и в runtime. -->
+        <Style x:Key="PeriodComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinWidth" Value="190"/>
+            <Setter Property="Width" Value="190"/>
+            <Setter Property="Padding" Value="14,0,30,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="292"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ============== БОКОВАЯ ПАНЕЛЬ ============== -->
+        <Border Grid.Column="0" Background="{DynamicResource ThemeSidebarBrush}" 
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="12,10,12,10">
+
+                <!-- Логотип в углу -->
+                <Border DockPanel.Dock="Top" 
+                        Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="18" 
+                        Padding="10" Margin="0,0,0,10"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Resources/logo.png" 
+                               Width="44" Height="44"
+                               Margin="0,0,8,0"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="ИИС" Foreground="{DynamicResource ThemeTextSubtleBrush}" 
+                                       FontSize="11" FontWeight="Black"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Text="Арт-" Foreground="{DynamicResource ThemeTextBrush}" 
+                                       FontSize="12" FontWeight="ExtraBold"/>
+                            <TextBlock Text="студия" Foreground="{DynamicResource ThemeTextBrush}" 
+                                       FontSize="12" FontWeight="ExtraBold"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="NavigationPanel" VerticalAlignment="Top">
+
+                        <Button x:Name="HomeButton" Style="{StaticResource MenuButtonActiveStyle}"
+                                Tag="Home" Click="HomeButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeWarningBgBrush}">
+                                    <TextBlock Text="🏠" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Ведомость" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Leads" Click="LeadsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeInfoBgBrush}">
+                                    <TextBlock Text="📝" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Карточки гостей" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Contracts" Click="ContractsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeWarningBgBrush}">
+                                    <TextBlock Text="📄" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Договоры" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Rectangle Height="1" Fill="{DynamicResource ThemeBorderBrush}" Margin="8,8"/>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Courses" Click="CoursesButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeHoverSurfaceBrush}">
+                                    <TextBlock Text="🎨" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Услуги / курсы" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Directions" Click="DirectionsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeDangerBgBrush}">
+                                    <TextBlock Text="🎯" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Направления" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Teachers" Click="TeachersButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeSelectedRowBrush}">
+                                    <TextBlock Text="🧑‍🏫" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Преподаватели" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Groups" Click="GroupsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeDangerBgBrush}">
+                                    <TextBlock Text="📚" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Группы" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Rectangle Height="1" Fill="{DynamicResource ThemeBorderBrush}" Margin="8,8"/>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Schools" Click="SchoolsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeSuccessBgBrush}">
+                                    <TextBlock Text="🏫" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Школы / сады" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Streets" Click="StreetsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeInfoBgBrush}">
+                                    <TextBlock Text="🛣" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Улицы" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Rectangle Height="1" Fill="{DynamicResource ThemeBorderBrush}" Margin="8,8"/>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Reports" Click="ReportsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeInfoBgBrush}">
+                                    <TextBlock Text="📤" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Аналитика" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Notifications" Click="BellButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeWarningBgBrush}">
+                                    <TextBlock Text="✅" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Действия / задачи" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Rectangle Height="1" Fill="{DynamicResource ThemeBorderBrush}" Margin="8,8"/>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Dashboard" Click="SummaryButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeSuccessBgBrush}">
+                                    <TextBlock Text="📊" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Сводка" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="TrialLessons" Click="TrialLessonsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeWarningBgBrush}">
+                                    <TextBlock Text="🎯" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Пробные" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Payments" Click="PaymentsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeDangerBgBrush}">
+                                    <TextBlock Text="💳" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Оплаты" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Debt" Click="DebtButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="#FEE2E2">
+                                    <TextBlock Text="⚠" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Задолженность" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Expenses" Click="ExpensesButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeWarningBgBrush}">
+                                    <TextBlock Text="🧾" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Расходы" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="PlansKpi" Click="PlansKpiButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeInfoBgBrush}">
+                                    <TextBlock Text="📈" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="KPI" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="AiAnalytics" Click="AiAnalyticsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="#EDE9FE">
+                                    <TextBlock Text="🤖" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="ИИ-аналитика" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Dictionaries" Click="DictionariesButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeHoverSurfaceBrush}">
+                                    <TextBlock Text="🗂" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Справочники" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="MaxBot" Click="MaxBotButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Margin="0,0,12,0">
+                                    <Border Style="{StaticResource MenuIconStyle}" Background="#DBEAFE">
+                                        <TextBlock Text="💬" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="MaxBotUnreadBadge" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                            Margin="0,-5,-5,0" MinWidth="18" Height="18" CornerRadius="9"
+                                            Background="#EF4444" BorderBrush="{DynamicResource ThemeSurfaceBrush}"
+                                            BorderThickness="2" Padding="4,0" Visibility="Collapsed">
+                                        <TextBlock x:Name="MaxBotUnreadBadgeText" FontSize="10" FontWeight="Bold"
+                                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Text="MAX-бот" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButtonStyle}" Tag="Help" Click="HelpButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource MenuIconStyle}" Background="{DynamicResource ThemeBgBrush}">
+                                    <TextBlock Text="⚙" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Справка" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- ============== ПРАВАЯ ЧАСТЬ ============== -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Шапка -->
+            <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}" 
+                    BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+                <Grid Margin="28,14,28,14">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" 
+                                   FontSize="11" FontWeight="Black" 
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="PageTitleText" Text="Ведомость"
+                                   FontSize="22" FontWeight="ExtraBold" 
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                        <!-- Жёлтый колокольчик уведомлений -->
+                        <Button x:Name="BellButton"
+                                Style="{StaticResource HeaderButtonStyle}" Margin="4,0"
+                                Click="BellButton_Click"
+                                ToolTip="Открыть уведомления">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="22" Height="22" CornerRadius="8" 
+                                        Background="{DynamicResource ThemeWarningBgBrush}" Margin="0,0,8,0">
+                                    <TextBlock Text="🔔" FontSize="13"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock x:Name="BellBadgeText" Text="" VerticalAlignment="Center"
+                                           Visibility="Collapsed"
+                                           Foreground="{DynamicResource ThemeWarningFgBrush}" FontWeight="Black"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="UserButton" 
+                                Style="{StaticResource HeaderButtonStyle}"
+                                Click="UserButton_Click"/>
+                        <Button Content="—  Свернуть"
+                                Style="{StaticResource HeaderButtonStyle}"
+                                Click="MinimizeButton_Click"
+                                ToolTip="Свернуть окно в панель задач"/>
+                        <Button x:Name="ExitButton" Content="✕  Выход"
+                                Style="{StaticResource DarkButtonStyle}"
+                                Click="ExitButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Рабочая область главной страницы -->
+            <Grid Grid.Row="1">
+            <Grid x:Name="HomeWorkArea">
+            <views:PaymentVedomostControl x:Name="PaymentVedomost" Margin="28,16" Visibility="Collapsed"/>
+            <ScrollViewer x:Name="DashboardScroll" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="28">
+                    <!-- Заголовок страницы + период -->
+                        <Grid x:Name="DashboardPeriodBlock" Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Сводка по филиалу"
+                                       FontSize="32" FontWeight="ExtraBold"
+                                       Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,4"/>
+                            <TextBlock x:Name="DashboardPeriodText"
+                                       Text="Ключевые показатели и быстрые действия"
+                                       FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                        </StackPanel>
+
+                        <Border Grid.Column="1"
+                                Background="{DynamicResource ThemeSurfaceBrush}"
+                                CornerRadius="28"
+                                Padding="16"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                BorderThickness="1"
+                                VerticalAlignment="Center">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="24" ShadowDepth="8" Opacity="0.04"/>
+                            </Border.Effect>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Первая строка: период + список + кнопка -->
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="Период"
+                                               Foreground="{DynamicResource ThemeTextSubtleBrush}"
+                                               FontSize="11"
+                                               FontWeight="Black"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+
+                                    <ComboBox x:Name="PeriodPresetCombo"
+                                              Style="{StaticResource PeriodComboBoxStyle}"
+                                              SelectionChanged="PeriodPresetCombo_SelectionChanged">
+                                        <ComboBoxItem Content="Текущий месяц" Tag="CurrentMonth"/>
+                                        <ComboBoxItem Content="Прошлый месяц" Tag="PreviousMonth"/>
+                                        <ComboBoxItem Content="Последние 30 дней" Tag="Last30Days"/>
+                                        <ComboBoxItem Content="Текущий квартал" Tag="CurrentQuarter"/>
+                                        <ComboBoxItem Content="Свой период" Tag="Custom"/>
+                                    </ComboBox>
+
+                                    <Button Content="Показать"
+                                            Style="{StaticResource PeriodApplyButtonStyle}"
+                                            Height="38"
+                                            MinWidth="120"
+                                            Margin="12,0,0,0"
+                                            Click="ApplyPeriodButton_Click"/>
+                                </StackPanel>
+
+                                <!-- Вторая строка: даты. Теперь они не режутся, потому что не живут в тесной коробке -->
+                                <StackPanel Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,10,0,0"
+                                            HorizontalAlignment="Right">
+                                    <DatePicker x:Name="DateFromPicker"
+                                                Width="210"
+                                                MinWidth="210"
+                                                Height="38"
+                                                SelectedDateFormat="Short"
+                                                SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+
+                                    <TextBlock Text="—"
+                                               Foreground="{DynamicResource ThemeTextSubtleBrush}"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0"/>
+
+                                    <DatePicker x:Name="DateToPicker"
+                                                Width="210"
+                                                MinWidth="210"
+                                                Height="38"
+                                                SelectedDateFormat="Short"
+                                                SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- KPI-карточки -->
+                    <UniformGrid x:Name="FinanceKpiGrid" Columns="3" Margin="0,0,0,16">
+                        <!-- Выручка -->
+                        <Border Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Border Width="46" Height="46" CornerRadius="18"
+                                            Background="{DynamicResource ThemeBgBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="💰" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock x:Name="RevenueTitleText" Text="Выручка за период"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                                        <TextBlock x:Name="RevenueDetailsText" Text="Договоры + продажи"
+                                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <TextBlock x:Name="RevenueValueText" Text="0 ₽" Style="{StaticResource KpiValueStyle}"/>
+                                <Border Background="{DynamicResource ThemeSuccessBgBrush}" CornerRadius="999" Padding="10,4" HorizontalAlignment="Left">
+                                    <TextBlock x:Name="RevenueBadgeText" Text="к прошлому периоду"
+                                               Foreground="{DynamicResource ThemeSuccessFgBrush}" FontSize="12" FontWeight="Black"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Договоры -->
+                        <Border Style="{StaticResource DashboardCardStyle}" Margin="4,0,4,0">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Border Width="46" Height="46" CornerRadius="18"
+                                            Background="{DynamicResource ThemeBgBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="📄" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Text="Новые договоры"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                                        <TextBlock Text="из раздела «Договоры»"
+                                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <TextBlock x:Name="ContractsValueText" Text="0" Style="{StaticResource KpiValueStyle}"/>
+                                <Border Background="{DynamicResource ThemeSelectedRowBrush}" CornerRadius="999" Padding="10,4" HorizontalAlignment="Left">
+                                    <TextBlock x:Name="ContractsBadgeText" Text="к прошлому периоду"
+                                               Foreground="{DynamicResource ThemeSelectedRowTextBrush}" FontSize="12" FontWeight="Black"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Источники прихода -->
+                        <Border Style="{StaticResource DashboardCardStyle}" Margin="8,0,0,0">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Border Width="46" Height="46" CornerRadius="18"
+                                            Background="{DynamicResource ThemeBgBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="📣" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Text="Карточки гостей по источникам"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                                        <TextBlock x:Name="LeadSourceDetailsText" Text="из раздела «Карточки гостей»"
+                                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <TextBlock x:Name="LeadSourceValueText" Text="0 заявок" Style="{StaticResource KpiValueStyle}"/>
+                                <Border x:Name="LeadSourceBadgeBorder" Background="{DynamicResource ThemeInfoBgBrush}" CornerRadius="999"
+                                        Padding="10,4" HorizontalAlignment="Left">
+                                    <TextBlock x:Name="LeadSourceBadgeText" Text="лидер: —"
+                                               Foreground="{DynamicResource ThemeInfoFgBrush}" FontSize="12" FontWeight="Black"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+
+                    <!-- Приветственная карточка -->
+                    <Border x:Name="WelcomeCard" Style="{StaticResource DashboardCardStyle}" Padding="24" Margin="0,8,0,16">
+                        <StackPanel>
+                            <TextBlock x:Name="WelcomeText"
+                                       Text="Добро пожаловать!"
+                                       FontSize="18" FontWeight="ExtraBold"
+                                       Foreground="{DynamicResource ThemeTextBrush}"/>
+                            <TextBlock x:Name="WelcomeHintText"
+                                       Text="Главная страница считает данные из БД: договоры, продажи, карточки гостей и источники прихода"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                       TextWrapping="Wrap" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border x:Name="OperationalHomePanel"
+                            Style="{StaticResource DashboardCardStyle}"
+                            Padding="24"
+                            Margin="0,0,0,16"
+                            Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock Text="Рабочий стол"
+                                       FontSize="22" FontWeight="ExtraBold"
+                                       Foreground="{DynamicResource ThemeTextBrush}"/>
+                            <TextBlock TextWrapping="Wrap"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                       Margin="0,8,0,16"
+                                       Text="Сводка по продажам и экранная аналитика откроются у директора и старшего менеджера после наполнения базы. Сейчас используйте разделы слева и выгрузку в Excel."/>
+                            <Button x:Name="HomeExcelExportButton"
+                                    Content="📤  Экспорт отчётов в Excel"
+                                    Style="{StaticResource HeaderButtonStyle}"
+                                    HorizontalAlignment="Left"
+                                    Padding="18,12"
+                                    Click="ReportsButton_Click"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Диаграммы -->
+                    <Grid x:Name="FinanceChartsGrid" Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.35*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Динамика выручки -->
+                        <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,14">
+                                    <Border Width="40" Height="40" CornerRadius="16" Background="{DynamicResource ThemeInfoBgBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="📊" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Text="Динамика выручки"
+                                                   FontSize="18" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                        <TextBlock Text="чёрное — договоры, жёлтое — продажи"
+                                                   FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <ItemsControl x:Name="RevenueTrendItemsControl">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="76"/>
+                                                    <ColumnDefinition Width="280"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                                           FontSize="12" VerticalAlignment="Center"/>
+
+                                                <Grid Grid.Column="1" Height="16" VerticalAlignment="Center">
+                                                    <Border Height="14" CornerRadius="999" Background="{DynamicResource ThemeBgBrush}"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <Border Width="{Binding ContractBarWidth}" Height="14" CornerRadius="999,0,0,999"
+                                                                Background="{DynamicResource ThemePrimaryBrush}" ToolTip="{Binding ContractRevenueText}"/>
+                                                        <Border Width="{Binding SalesBarWidth}" Height="14" CornerRadius="0,999,999,0"
+                                                                Background="{DynamicResource ThemeAccentOrangeBrush}" ToolTip="{Binding SalesRevenueText}"/>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <TextBlock Grid.Column="2" Text="{Binding TotalText}" Foreground="{DynamicResource ThemeTextBrush}"
+                                                           FontSize="12" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Структура выручки -->
+                        <Border Grid.Column="1" Style="{StaticResource DashboardCardStyle}" Margin="8,0,0,0">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,14">
+                                    <Border Width="40" Height="40" CornerRadius="16" Background="{DynamicResource ThemeWarningBgBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="🧩" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Text="Структура выручки"
+                                                   FontSize="18" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                        <TextBlock Text="сколько дали договоры и продажи"
+                                                   FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <ItemsControl x:Name="RevenueStructureItemsControl">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="0,8">
+                                                <DockPanel>
+                                                    <TextBlock Text="{Binding ValueText}" DockPanel.Dock="Right" Foreground="{DynamicResource ThemeTextBrush}"
+                                                               FontSize="12" FontWeight="Bold"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Title}" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="Bold" FontSize="13"/>
+                                                        <Border Background="{Binding BadgeBackground}" CornerRadius="999" Padding="8,2" Margin="8,0,0,0">
+                                                            <TextBlock Text="{Binding Subtitle}" Foreground="{Binding BadgeForeground}" FontSize="11" FontWeight="Bold"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </DockPanel>
+                                                <Grid Height="14" Margin="0,8,0,0">
+                                                    <Border Height="12" CornerRadius="999" Background="{DynamicResource ThemeBgBrush}"/>
+                                                    <Border Width="{Binding BarWidth}" Height="12" CornerRadius="999" Background="{Binding BarBrush}"
+                                                            HorizontalAlignment="Left"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid x:Name="LeadAnalyticsGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Источники прихода -->
+                        <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,14">
+                                    <Border Width="40" Height="40" CornerRadius="16" Background="{DynamicResource ThemeInfoBgBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="📣" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Text="Источники прихода"
+                                                   FontSize="18" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                        <TextBlock x:Name="LeadSourceChartSubtitleText" Text="карточки гостей за выбранный период"
+                                                   FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="240"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" Width="220" Height="220" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                        <Ellipse Width="176" Height="176" Fill="{DynamicResource ThemeHoverSurfaceBrush}" Stroke="{DynamicResource ThemeBorderBrush}" StrokeThickness="1"/>
+                                        <ItemsControl x:Name="RiskPieSlicesControl">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Canvas Width="220" Height="220"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="220" Height="220">
+                                                        <Path Fill="{Binding BarBrush}" Stroke="White" StrokeThickness="3" Data="{Binding SlicePathData}">
+                                                            <Path.Style>
+                                                                <Style TargetType="Path">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding HasValue}" Value="False">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsFullCircle}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Path.Style>
+                                                        </Path>
+                                                        <Ellipse Width="176" Height="176" Fill="{Binding BarBrush}" Stroke="White" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Ellipse.Style>
+                                                                <Style TargetType="Ellipse">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <MultiDataTrigger>
+                                                                            <MultiDataTrigger.Conditions>
+                                                                                <Condition Binding="{Binding HasValue}" Value="True"/>
+                                                                                <Condition Binding="{Binding IsFullCircle}" Value="True"/>
+                                                                            </MultiDataTrigger.Conditions>
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </MultiDataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Ellipse.Style>
+                                                        </Ellipse>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Ellipse Width="94" Height="94" Fill="White" Stroke="{DynamicResource ThemeBorderBrush}" StrokeThickness="1"/>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock x:Name="RiskPieCenterValueText" Text="0" FontSize="24" FontWeight="Black" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="RiskPieCenterSubtitleText" Text="заявок" FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <ItemsControl Grid.Column="1" x:Name="RiskDistributionItemsControl" Margin="12,0,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="18" Padding="12" Margin="0,0,0,10">
+                                                    <DockPanel>
+                                                        <Border DockPanel.Dock="Right" Background="{Binding BadgeBackground}" CornerRadius="999" Padding="9,3" Margin="8,0,0,0">
+                                                            <TextBlock Text="{Binding PercentageText}" Foreground="{Binding BadgeForeground}" FontSize="12" FontWeight="Black"/>
+                                                        </Border>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Width="12" Height="12" Fill="{Binding BarBrush}" Margin="0,2,10,0"/>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource ThemeTextBrush}" FontSize="13" FontWeight="Bold"/>
+                                                                <TextBlock Text="{Binding ValueText}" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </DockPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Топ направлений -->
+                        <Border Grid.Column="1" Style="{StaticResource DashboardCardStyle}" Margin="8,0,0,0">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,14">
+                                    <Border Width="40" Height="40" CornerRadius="16" Background="{DynamicResource ThemeAccentVioletBrush}" DockPanel.Dock="Right">
+                                        <TextBlock Text="🎨" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Text="Выручка по направлениям"
+                                                   FontSize="18" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                                        <TextBlock Text="круговая диаграмма по договорам"
+                                                   FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="240"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" Width="220" Height="220" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                        <Ellipse Width="176" Height="176" Fill="{DynamicResource ThemeHoverSurfaceBrush}" Stroke="{DynamicResource ThemeBorderBrush}" StrokeThickness="1"/>
+                                        <ItemsControl x:Name="DirectionPieSlicesControl">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Canvas Width="220" Height="220"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="220" Height="220">
+                                                        <Path Fill="{Binding BarBrush}" Stroke="White" StrokeThickness="3" Data="{Binding SlicePathData}">
+                                                            <Path.Style>
+                                                                <Style TargetType="Path">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding HasValue}" Value="False">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsFullCircle}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Path.Style>
+                                                        </Path>
+                                                        <Ellipse Width="176" Height="176" Fill="{Binding BarBrush}" Stroke="White" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Ellipse.Style>
+                                                                <Style TargetType="Ellipse">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <MultiDataTrigger>
+                                                                            <MultiDataTrigger.Conditions>
+                                                                                <Condition Binding="{Binding HasValue}" Value="True"/>
+                                                                                <Condition Binding="{Binding IsFullCircle}" Value="True"/>
+                                                                            </MultiDataTrigger.Conditions>
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </MultiDataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Ellipse.Style>
+                                                        </Ellipse>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Ellipse Width="94" Height="94" Fill="White" Stroke="{DynamicResource ThemeBorderBrush}" StrokeThickness="1"/>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock x:Name="DirectionPieCenterValueText" Text="0" FontSize="24" FontWeight="Black" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="DirectionPieCenterSubtitleText" Text="направлений" FontSize="12" Foreground="{DynamicResource ThemeTextSubtleBrush}" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <ItemsControl Grid.Column="1" x:Name="DirectionRevenueItemsControl" Margin="12,0,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="18" Padding="12" Margin="0,0,0,10">
+                                                    <DockPanel>
+                                                        <Border DockPanel.Dock="Right" Background="{Binding BadgeBackground}" CornerRadius="999" Padding="9,3" Margin="8,0,0,0">
+                                                            <TextBlock Text="{Binding PercentageText}" Foreground="{Binding BadgeForeground}" FontSize="12" FontWeight="Black"/>
+                                                        </Border>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Width="12" Height="12" Fill="{Binding BarBrush}" Margin="0,2,10,0"/>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource ThemeTextBrush}" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                                <TextBlock Text="{Binding ValueText}" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </DockPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+            </Grid>
+            <ContentControl x:Name="SectionHost" Visibility="Collapsed"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

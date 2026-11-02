@@ -1,0 +1,382 @@
+<Window x:Class="VKR.Views.LeadEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Карточка гостя — Арт-студия"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="InputBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="36"/>
+        </Style>
+        <Style x:Key="InputLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="ExtraBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style x:Key="DialogButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="CompactDataGridStyle" TargetType="DataGrid" BasedOn="{StaticResource ModernDataGridStyle}">
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="ColumnHeaderHeight" Value="24"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1" Padding="24,14">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="40" Height="40" Margin="0,0,14,0"/>
+                    <StackPanel>
+                        <TextBlock Text="КАРТОЧКИ ГОСТЕЙ" FontSize="10" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="DialogTitleText" Text="Новая карточка гостя" FontSize="22" FontWeight="ExtraBold"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="Свернуть" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" Margin="0,0,120,0" Click="MinimizeButton_Click"/>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" Click="CancelButton_Click"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="24,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Гость" Style="{StaticResource SectionTitleStyle}"/>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="14" Padding="14"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,8">
+                                <TextBlock Style="{StaticResource InputLabelStyle}">
+                                    <Run Text="ФИО ГОСТЯ"/>
+                                </TextBlock>
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <TextBox x:Name="GuestFullNameTextBox" Padding="10,0" BorderThickness="0"
+                                             VerticalContentAlignment="Center" FontSize="13" Background="Transparent"
+                                             LostFocus="NameTextBox_LostFocus"/>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,8">
+                                <TextBlock Text="ДАТА РОЖДЕНИЯ" Style="{StaticResource InputLabelStyle}"/>
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <xctk:MaskedTextBox x:Name="BirthDateMaskedBox" Mask="00\.00\.0000"
+                                        BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center"
+                                        Padding="10,0" FontSize="13" PromptChar="_"
+                                        LostFocus="BirthDateMaskedBox_LostFocus"/>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock x:Name="PhoneLabelText" Text="ТЕЛЕФОН" Style="{StaticResource InputLabelStyle}"/>
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <xctk:MaskedTextBox x:Name="PhoneMaskedBox" Mask="+7 (000) 000-00-00"
+                                        BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center"
+                                        Padding="10,0" FontSize="13" PromptChar="_"
+                                        GotFocus="MaskedBox_GotFocus" PreviewMouseLeftButtonUp="MaskedBox_PreviewMouseLeftButtonUp"/>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,8">
+                                <TextBlock Text="УЛИЦА (ИЗ СПРАВОЧНИКА)" Style="{StaticResource InputLabelStyle}"/>
+                                <ComboBox x:Name="StreetCombo" Height="36" FontSize="13"
+                                          VerticalContentAlignment="Center"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"
+                                          IsEditable="True" IsTextSearchEnabled="False"
+                                          ToolTip="Начните вводить название улицы из справочника"/>
+                                <Grid Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="ДОМ" Style="{StaticResource InputLabelStyle}"/>
+                                        <Border Style="{StaticResource InputBorderStyle}">
+                                            <TextBox x:Name="HouseNumberBox" Padding="10,0" BorderThickness="0"
+                                                     VerticalContentAlignment="Center" FontSize="13" Background="Transparent"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="КВ." Style="{StaticResource InputLabelStyle}"/>
+                                        <Border Style="{StaticResource InputBorderStyle}">
+                                            <TextBox x:Name="ApartmentNumberBox" Padding="10,0" BorderThickness="0"
+                                                     VerticalContentAlignment="Center" FontSize="13" Background="Transparent"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel x:Name="InstitutionPanel" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
+                                <TextBlock Text="ПОСЕЩЕНИЕ ШКОЛЫ / ДС" Style="{StaticResource InputLabelStyle}"/>
+                                <ComboBox x:Name="InstitutionCombo" Height="36" FontSize="13"
+                                          VerticalContentAlignment="Center"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"
+                                          IsEditable="True" IsTextSearchEnabled="False"
+                                          MaxDropDownHeight="280"
+                                          ToolTip="Начните вводить название учреждения из справочника"/>
+                                <TextBlock Text="КОММЕНТ (СМЕНА В ШКОЛЕ)" Style="{StaticResource InputLabelStyle}" Margin="0,8,0,4"/>
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <TextBox x:Name="SchoolShiftBox" Padding="10,0" BorderThickness="0"
+                                             VerticalContentAlignment="Center" FontSize="13" Background="Transparent"/>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel x:Name="WorkplacePanel" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                                        Visibility="Collapsed">
+                                <TextBlock Text="МЕСТО РАБОТЫ (необязательно)" Style="{StaticResource InputLabelStyle}"/>
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <TextBox x:Name="WorkplaceBox" Padding="10,0" BorderThickness="0"
+                                             VerticalContentAlignment="Center" FontSize="13" Background="Transparent"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock x:Name="GuestKindHint" Text="Для ребёнка укажите маму и/или папу. Направления — ниже справа."
+                               FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,0,0,12"/>
+
+                    <TextBlock Text="Параметры" Style="{StaticResource SectionTitleStyle}"/>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="14" Padding="14"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,8">
+                                <TextBlock Text="ОТКУДА УЗНАЛИ О ЦЕНТРЕ" Style="{StaticResource InputLabelStyle}"/>
+                                <ComboBox x:Name="SourceComboBox" Height="36" FontSize="13"
+                                          VerticalContentAlignment="Center"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"
+                                          IsEditable="True" IsTextSearchEnabled="False"
+                                          ToolTip="Начните вводить источник из справочника"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="СТАТУС" Style="{StaticResource InputLabelStyle}"/>
+                                <ComboBox x:Name="StatusComboBox" Height="36" FontSize="13"
+                                          VerticalContentAlignment="Center"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"
+                                          IsEditable="True" IsTextSearchEnabled="False"
+                                          ToolTip="Начните вводить статус"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,8">
+                                <TextBlock Text="БОЛЬШОЙ КОММЕНТАРИЙ (ДЛЯ МЕНЕДЖЕРА)" Style="{StaticResource InputLabelStyle}"/>
+                                <TextBox x:Name="CommentTextBox" Height="110" Padding="10,8" FontSize="13"
+                                         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Родители (три блока)" Style="{StaticResource SectionTitleStyle}"/>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10">
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="14" Padding="14"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="БЛОК 1" Style="{StaticResource InputLabelStyle}"/>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox x:Name="Parent1RelationCombo" Grid.Row="0" Grid.Column="0" Height="36" Margin="0,0,0,8"
+                                          IsEditable="True" IsTextSearchEnabled="False"/>
+                                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource InputBorderStyle}" Margin="0,0,0,8">
+                                    <TextBox x:Name="Parent1NameBox" Padding="10,0" BorderThickness="0" VerticalContentAlignment="Center"
+                                             FontSize="13" Background="Transparent" LostFocus="NameTextBox_LostFocus"/>
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource InputBorderStyle}">
+                                    <xctk:MaskedTextBox x:Name="Parent1PhoneBox" Mask="+7 (000) 000-00-00"
+                                        BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center"
+                                        Padding="10,0" FontSize="13" PromptChar="_"
+                                        GotFocus="MaskedBox_GotFocus" PreviewMouseLeftButtonUp="MaskedBox_PreviewMouseLeftButtonUp"/>
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource InputBorderStyle}">
+                                    <TextBox x:Name="Parent1AgeBox" Padding="10,0" BorderThickness="0" VerticalContentAlignment="Center"
+                                             FontSize="13" Background="Transparent" ToolTip="Возраст"/>
+                                </Border>
+                            </Grid>
+                            <TextBlock Text="БЛОК 2" Style="{StaticResource InputLabelStyle}"/>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox x:Name="Parent2RelationCombo" Grid.Row="0" Grid.Column="0" Height="36" Margin="0,0,0,8"
+                                          IsEditable="True" IsTextSearchEnabled="False"/>
+                                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource InputBorderStyle}" Margin="0,0,0,8">
+                                    <TextBox x:Name="Parent2NameBox" Padding="10,0" BorderThickness="0" VerticalContentAlignment="Center"
+                                             FontSize="13" Background="Transparent" LostFocus="NameTextBox_LostFocus"/>
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource InputBorderStyle}">
+                                    <xctk:MaskedTextBox x:Name="Parent2PhoneBox" Mask="+7 (000) 000-00-00"
+                                        BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center"
+                                        Padding="10,0" FontSize="13" PromptChar="_"
+                                        GotFocus="MaskedBox_GotFocus" PreviewMouseLeftButtonUp="MaskedBox_PreviewMouseLeftButtonUp"/>
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource InputBorderStyle}">
+                                    <TextBox x:Name="Parent2AgeBox" Padding="10,0" BorderThickness="0" VerticalContentAlignment="Center"
+                                             FontSize="13" Background="Transparent"/>
+                                </Border>
+                            </Grid>
+                            <TextBlock Text="БЛОК 3" Style="{StaticResource InputLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox x:Name="Parent3RelationCombo" Grid.Row="0" Grid.Column="0" Height="36" Margin="0,0,0,8"
+                                          IsEditable="True" IsTextSearchEnabled="False"/>
+                                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource InputBorderStyle}" Margin="0,0,0,8">
+                                    <TextBox x:Name="Parent3NameBox" Padding="10,0" BorderThickness="0" VerticalContentAlignment="Center"
+                                             FontSize="13" Background="Transparent" LostFocus="NameTextBox_LostFocus"/>
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource InputBorderStyle}">
+                                    <xctk:MaskedTextBox x:Name="Parent3PhoneBox" Mask="+7 (000) 000-00-00"
+                                        BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center"
+                                        Padding="10,0" FontSize="13" PromptChar="_"
+                                        GotFocus="MaskedBox_GotFocus" PreviewMouseLeftButtonUp="MaskedBox_PreviewMouseLeftButtonUp"/>
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource InputBorderStyle}">
+                                    <TextBox x:Name="Parent3AgeBox" Padding="10,0" BorderThickness="0" VerticalContentAlignment="Center"
+                                             FontSize="13" Background="Transparent"/>
+                                </Border>
+                            </Grid>
+                            <TextBlock Text="Принадлежность · ФИО · телефон · возраст" FontSize="10"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    </ScrollViewer>
+
+                    <TextBlock Grid.Row="2" Text="Интересующие направления" Style="{StaticResource SectionTitleStyle}"/>
+                    <Border Grid.Row="3" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="14" Padding="12"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <ItemsControl x:Name="DirectionTagsControl" Margin="0,0,0,8">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#E0E7FF" CornerRadius="999" Padding="10,4" Margin="0,0,6,6">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <Button Content="×" Margin="8,0,0,0"
+                                                        MinWidth="28" MinHeight="28" Padding="0" FontWeight="Bold" FontSize="14"
+                                                        Background="#C7D2FE" BorderThickness="0" Cursor="Hand"
+                                                        ToolTip="Удалить направление"
+                                                        Click="RemoveDirection_Click"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock x:Name="NoDirectionsText" Text="Направление не выбрано — гость ещё думает."
+                                       FontSize="11" FontStyle="Italic" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox x:Name="DirectionAddCombo" Height="36" FontSize="13"
+                                          DisplayMemberPath="Name" SelectedValuePath="IdDirection"/>
+                                <Button Grid.Column="2" Content="➕  Добавить направление" Padding="14,8"
+                                        Style="{StaticResource SectionPrimaryButtonStyle}" Click="AddDirection_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+        <Border Grid.Row="2" Background="{DynamicResource ThemeSurfaceBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,1,0,0" Padding="24,14">
+            <Grid>
+                <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="10"
+                        Padding="12,8" Visibility="Collapsed" HorizontalAlignment="Left" MaxWidth="640" VerticalAlignment="Center">
+                    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                               FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </Border>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Отмена" Width="110" Style="{StaticResource DialogButtonStyle}"
+                            Background="{DynamicResource ThemeSurfaceBrush}" Foreground="{DynamicResource ThemeTextBrush}"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                            Margin="0,0,8,0" Click="CancelButton_Click"/>
+                    <Button Content="Сохранить" Width="130" Style="{StaticResource DialogButtonStyle}"
+                            Background="{DynamicResource ThemePrimaryBrush}" Foreground="{DynamicResource ThemeOnPrimaryBrush}"
+                            Click="SaveButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

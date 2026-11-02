@@ -1,0 +1,45 @@
+<Window x:Class="VKR.Views.TrialFollowupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="После пробного занятия"
+        WindowState="Maximized" WindowStyle="None"
+        Background="{DynamicResource ThemeBgBrush}" FontFamily="Segoe UI">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border Background="{DynamicResource ThemeHeaderBrush}" Padding="28,16">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="УВЕДОМЛЕНИЯ" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                    <TextBlock Text="Обратная связь после пробного" FontSize="22" FontWeight="ExtraBold"/>
+                    <TextBlock Text="Задачи администратору — узнать, как прошло занятие, и заполнить комментарий"
+                               FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Button Content="← Назад" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Style="{StaticResource SectionHeaderButtonStyle}" Click="Back_Click"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Margin="28,24" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="8">
+            <DataGrid x:Name="DueGrid" Style="{StaticResource ModernDataGridStyle}" IsReadOnly="True"
+                      AutoGenerateColumns="False" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="1.4*"/>
+                    <DataGridTextColumn Header="РЕБЁНОК" Binding="{Binding ChildFullName}" Width="*"/>
+                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding TaskStatusText}" Width="130"/>
+                    <DataGridTextColumn Header="НАПРАВЛЕНИЕ" Binding="{Binding DirectionName}" Width="*"/>
+                    <DataGridTextColumn Header="ПРОБНОЕ" Binding="{Binding ScheduledText}" Width="130"/>
+                    <DataGridTextColumn Header="СПРОСИТЬ С" Binding="{Binding DueAtText}" Width="130"/>
+                    <DataGridTextColumn Header="ТЕЛ. КЛИЕНТА" Binding="{Binding PrimaryPhoneText}" Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="28,0,28,24">
+            <Button Content="Отметить опрос" Style="{StaticResource SectionHeaderButtonStyle}"
+                    Margin="0,0,8,0" Click="Complete_Click"/>
+            <Button Content="Обновить" Style="{StaticResource SectionHeaderButtonStyle}" Click="Refresh_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

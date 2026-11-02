@@ -1,0 +1,293 @@
+<Window x:Class="VKR.Views.AttendanceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Посещаемость — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None" ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}" FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ПОСЕЩАЕМОСТЬ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="HeaderText" Text="Занятия преподавателя" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="28,20,28,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="410"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ЛЕВО: занятия конкретного дня -->
+            <Border Grid.Column="0" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20"
+                    BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Padding="20">
+                <Border.Effect>
+                    <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="32"
+                                      ShadowDepth="12" Opacity="0.05"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="ЗАНЯТИЯ ПО ДАТЕ"
+                                   FontSize="11" FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock x:Name="DayInfoText" Text="Выберите дату — покажу только занятия этого дня"
+                                   FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                        <TextBlock Text="ДАТА ЗАНЯТИЯ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                        <DatePicker x:Name="LessonDatePicker"
+                                    Height="38" FontSize="13"
+                                    VerticalContentAlignment="Center"
+                                    SelectedDateChanged="LessonDatePicker_SelectedDateChanged"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="← День" Style="{StaticResource HeaderButtonStyle}"
+                                Padding="10,7" Click="PreviousDay_Click"/>
+                        <Button Grid.Column="2" Content="Сегодня" Style="{StaticResource HeaderButtonStyle}"
+                                Padding="10,7" Click="Today_Click"/>
+                        <Button Grid.Column="4" Content="День →" Style="{StaticResource HeaderButtonStyle}"
+                                Padding="10,7" Click="NextDay_Click"/>
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="LessonsItemsControl">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,10"
+                                            Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="14"
+                                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                                            Padding="14,12"
+                                            Cursor="Hand"
+                                            Tag="{Binding IdSchedule}"
+                                            MouseLeftButtonUp="LessonCard_MouseLeftButtonUp">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="46"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0"
+                                                    Width="42" Height="42" CornerRadius="12"
+                                                    Background="{DynamicResource ThemeSelectedRowBrush}" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding TimeStartShortText}"
+                                                           FontSize="11" FontWeight="Black"
+                                                           Foreground="{DynamicResource ThemeSelectedRowTextBrush}"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding TimeRangeText}"
+                                                           FontSize="14" FontWeight="ExtraBold"
+                                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                                <TextBlock Text="{Binding GroupTitle}"
+                                                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="11"
+                                                           FontWeight="SemiBold"
+                                                           TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                <TextBlock Text="{Binding LessonMetaText}"
+                                                           Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="10"
+                                                           Margin="0,2,0,0"
+                                                           TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- ПРАВО: список учеников и отметка -->
+            <Border Grid.Column="2" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20"
+                    BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Padding="24">
+                <Border.Effect>
+                    <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="32"
+                                      ShadowDepth="12" Opacity="0.05"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,0,0,14">
+                        <TextBlock x:Name="LessonTitleText" Text="Выберите дату и занятие слева"
+                                   FontSize="20" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <TextBlock x:Name="LessonSubtitleText" Text=""
+                                   FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="✅ Все были" Style="{StaticResource HeaderButtonStyle}"
+                                Padding="12,7" Click="MarkAllPresent_Click"/>
+                        <Button Grid.Column="2" Content="❌ Все не были" Style="{StaticResource HeaderButtonStyle}"
+                                Padding="12,7" Click="MarkAllAbsent_Click"/>
+                        <TextBlock Grid.Column="4" x:Name="RowsSummaryText" Text=""
+                                   VerticalAlignment="Center" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="12"
+                                   FontWeight="Bold"/>
+                    </Grid>
+
+                    <Border Grid.Row="2" CornerRadius="12"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                            ClipToBounds="True">
+                        <DataGrid x:Name="StudentsGrid" Background="{DynamicResource ThemeSurfaceBrush}" BorderThickness="0"
+                                  HeadersVisibility="Column" GridLinesVisibility="None"
+                                  HorizontalGridLinesBrush="{DynamicResource ThemeGridLineBrush}"
+                                  RowHeight="24" ColumnHeaderHeight="24"
+                                  AutoGenerateColumns="False" CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  AlternatingRowBackground="{DynamicResource ThemeSurfaceBrush}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding StudentFullName}"
+                                                    Width="2*" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="Margin" Value="8,0,0,0"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridComboBoxColumn Header="СТАТУС" Width="170"
+                                                        SelectedItemBinding="{Binding Status, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridComboBoxColumn.ItemsSource>
+                                        <x:Array Type="sys:String"
+                                                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                            <sys:String>не отмечено</sys:String>
+                                            <sys:String>был</sys:String>
+                                            <sys:String>не был</sys:String>
+                                            <sys:String>уважительная</sys:String>
+                                            <sys:String>опоздал</sys:String>
+                                        </x:Array>
+                                    </DataGridComboBoxColumn.ItemsSource>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                            <Setter Property="Height" Value="34"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridTextColumn Header="КОММЕНТАРИЙ" Binding="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                    Width="2*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Grid Grid.Row="3" Margin="0,16,0,0">
+                        <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                                Padding="14,10" HorizontalAlignment="Stretch"
+                                Margin="0,0,0,8" Visibility="Collapsed">
+                            <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                                       FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                        </Border>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom">
+                            <Button Content="💾  Сохранить отметки"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Click="SaveAttendance_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

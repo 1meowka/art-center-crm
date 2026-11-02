@@ -1,0 +1,48 @@
+<Window x:Class="VKR.Views.MaxBotTemplateEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Шаблон сообщения"
+        Width="520" Height="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Border Margin="24" Background="{DynamicResource ThemeSurfaceBrush}"
+            CornerRadius="20" Padding="24"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Шаблон сообщения MAX" FontSize="20" FontWeight="ExtraBold"
+                       Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,16"/>
+
+            <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                <TextBlock Text="НАЗВАНИЕ" FontSize="11" FontWeight="Black"
+                           Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                <TextBox x:Name="TitleBox" Height="40" Padding="12,0" VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="ТЕКСТ" FontSize="11" FontWeight="Black"
+                           Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                <TextBox x:Name="BodyBox" Padding="12,10" TextWrapping="Wrap" AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+
+            <TextBlock x:Name="ErrorText" Grid.Row="3" Foreground="#EF4444" FontSize="12"
+                       TextWrapping="Wrap" Margin="0,10,0,0" Visibility="Collapsed"/>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="Отмена" Padding="16,9" Margin="0,0,8,0" Click="Cancel_Click"/>
+                <Button Content="Сохранить" Padding="16,9" FontWeight="Bold" Click="Save_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

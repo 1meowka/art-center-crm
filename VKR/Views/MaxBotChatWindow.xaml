@@ -1,0 +1,354 @@
+<Window x:Class="VKR.Views.MaxBotChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Чат с клиентами MAX"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        MinWidth="960"
+        MinHeight="640"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <Style x:Key="ChatBubbleInStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeInfoBgBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBlueBrush}"/>
+            <Setter Property="BorderThickness" Value="3,1,1,1"/>
+            <Setter Property="CornerRadius" Value="4,16,16,16"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,0,64,10"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="MaxWidth" Value="560"/>
+        </Style>
+
+        <Style x:Key="ChatBubbleOutStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="16,4,16,16"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="64,0,0,10"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="MaxWidth" Value="560"/>
+        </Style>
+
+        <Style x:Key="MaxBotChatConversationItemStyle" TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <!-- Фон/рамка отдельно от контента: CornerRadius не обрезает аватар -->
+                        <Grid HorizontalAlignment="Stretch">
+                            <Border x:Name="Bd" CornerRadius="12" BorderThickness="2"
+                                    Background="Transparent" BorderBrush="Transparent"
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    Margin="1,0"/>
+                            <ContentPresenter Margin="10,8,10,8" HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeSelectedRowBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeAccentBlueBrush}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="False"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeBorderHoverBrush}"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MaxBotReplyTextBoxStyle" TargetType="TextBox">
+            <Setter Property="MinHeight" Value="48"/>
+            <Setter Property="MaxHeight" Value="120"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="SelectionBrush" Value="{DynamicResource ThemeAccentBlueBrush}"/>
+            <Setter Property="SelectionTextBrush" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Stretch"
+                                          VerticalContentAlignment="Top"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush"
+                                        Value="{DynamicResource ThemeAccentBlueBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Background"
+                                        Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush"
+                                        Value="{DynamicResource ThemeBorderBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="💬" FontSize="28" Margin="0,0,14,0"/>
+                    <StackPanel>
+                        <TextBlock Text="ЧАТ С КЛИЕНТАМИ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Диалоги в MAX" FontSize="22" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock x:Name="PollingStatusText" Text="Слушаем MAX" VerticalAlignment="Center" Margin="0,0,16,0"
+                               FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                    <Button Content="← Назад" Style="{StaticResource SectionHeaderButtonStyle}" Click="Back_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="28,20,28,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MinWidth="300" MaxWidth="400"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="3*" MinWidth="420"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{DynamicResource ThemeSurfaceBrush}"
+                    CornerRadius="20" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    ClipToBounds="False">
+                <DockPanel Margin="10,12,10,12">
+                    <StackPanel DockPanel.Dock="Top" Margin="4,2,4,10">
+                        <TextBlock Text="ДИАЛОГИ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                        <TextBox x:Name="ConversationSearchBox" Height="36" Padding="10,0"
+                                 VerticalContentAlignment="Center" FontSize="13"
+                                 TextChanged="ConversationSearchBox_TextChanged"
+                                 ToolTip="Поиск по имени или тексту последнего сообщения"/>
+                        <ComboBox x:Name="ConversationSortCombo" Height="34" Margin="0,8,0,0"
+                                  SelectionChanged="ConversationSortCombo_SelectionChanged">
+                            <ComboBoxItem Content="Сначала новые" IsSelected="True"/>
+                            <ComboBoxItem Content="Сначала старые"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <ListBox x:Name="ConversationsList" BorderThickness="0" Background="Transparent"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             Padding="0,4,0,4"
+                             ItemContainerStyle="{StaticResource MaxBotChatConversationItemStyle}"
+                             SelectionChanged="ConversationsList_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" MinWidth="0"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal"
+                                                VerticalAlignment="Top" Margin="0,0,10,0">
+                                        <Border Width="4" CornerRadius="2" Margin="0,8,6,0"
+                                                VerticalAlignment="Top" MinHeight="24"
+                                                Background="#EF4444"
+                                                Visibility="{Binding HasUnread, Converter={StaticResource BoolToVis}}"/>
+                                        <Border Width="40" Height="40" CornerRadius="20"
+                                                Background="{DynamicResource ThemeInfoBgBrush}"
+                                                BorderBrush="{DynamicResource ThemeAccentBlueBrush}"
+                                                BorderThickness="1.5">
+                                            <TextBlock Text="{Binding Initials}" FontSize="15" FontWeight="Bold"
+                                                       Foreground="{DynamicResource ThemeInfoFgBrush}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <Grid Grid.Column="1" MinWidth="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" MinWidth="0"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="14"
+                                                       Foreground="{DynamicResource ThemeTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding LastMessageTimeText}"
+                                                       FontSize="10" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" MinWidth="0"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding LastMessagePreview}" FontSize="12"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,0,8,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontWeight" Value="Normal"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasUnread}" Value="True">
+                                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <Border Grid.Column="1" MinWidth="20" Height="20"
+                                                    Padding="6,2" CornerRadius="10" Background="#EF4444"
+                                                    VerticalAlignment="Center"
+                                                    Visibility="{Binding HasUnread, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="{Binding UnreadBadgeText}" FontSize="10" FontWeight="Bold"
+                                                           Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2" Background="{DynamicResource ThemeSurfaceBrush}"
+                    CornerRadius="20" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Padding="20,16" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                            BorderThickness="0,0,0,1" Background="{DynamicResource ThemeHoverSurfaceBrush}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <Border x:Name="ChatAvatarBorder" Width="44" Height="44" CornerRadius="22"
+                                        Background="{DynamicResource ThemeInfoBgBrush}"
+                                        BorderBrush="{DynamicResource ThemeAccentBlueBrush}" BorderThickness="1.5"
+                                        Margin="0,0,14,0" Visibility="Collapsed">
+                                    <TextBlock x:Name="ChatAvatarInitials" FontSize="16" FontWeight="Bold"
+                                               Foreground="{DynamicResource ThemeInfoFgBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock x:Name="ChatTitleText" FontSize="18" FontWeight="ExtraBold"
+                                               Foreground="{DynamicResource ThemeTextBrush}"
+                                               Text="Выберите диалог слева"/>
+                                    <TextBlock x:Name="ChatSubtitleText" FontSize="12"
+                                               Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                               Text="Сообщения клиента — слева, ответы центра — справа"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Column="1" x:Name="MarkUnreadButton" Content="Пометить непрочитанным"
+                                    Padding="12,8" VerticalAlignment="Center" IsEnabled="False"
+                                    Click="MarkUnread_Click" ToolTip="Вернуть диалог в список непрочитанных"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1" Margin="16,12,16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="MessageSearchBox" Height="36" Padding="10,0"
+                                 VerticalContentAlignment="Center" FontSize="13" IsEnabled="False"
+                                 TextChanged="MessageSearchBox_TextChanged"
+                                 ToolTip="Поиск по тексту сообщений в открытом диалоге"/>
+                        <ComboBox Grid.Column="1" x:Name="MessageSortCombo" Width="170" Height="36" Margin="10,0,0,0"
+                                  IsEnabled="False" SelectionChanged="MessageSortCombo_SelectionChanged">
+                            <ComboBoxItem Content="Старые сверху" IsSelected="True"/>
+                            <ComboBoxItem Content="Новые сверху"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Border Grid.Row="2" Background="{DynamicResource ThemeBgBrush}" Margin="12,12,12,0"
+                            CornerRadius="16" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <ScrollViewer x:Name="MessagesScroll" Padding="16,14" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="MessagesList"/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border Grid.Row="3" Margin="16,12,16,16" Padding="0,12,0,0"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,1,0,0">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <TextBox x:Name="ReplyBox" Style="{StaticResource MaxBotReplyTextBoxStyle}"
+                                             IsEnabled="False" PreviewKeyDown="ReplyBox_PreviewKeyDown"
+                                             TextChanged="ReplyBox_TextChanged"
+                                             GotFocus="ReplyBox_FocusChanged" LostFocus="ReplyBox_FocusChanged"/>
+                                    <TextBlock x:Name="ReplyPlaceholder" Text="Выберите диалог слева…"
+                                               IsHitTestVisible="False" FontSize="14"
+                                               Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                               Margin="16,14,14,12" VerticalAlignment="Top" TextWrapping="Wrap"/>
+                                </Grid>
+                                <Button Grid.Column="1" Content="Отправить" Margin="12,0,0,0" Padding="20,12"
+                                        Style="{StaticResource SectionPrimaryButtonStyle}" Click="SendReply_Click"
+                                        IsEnabled="False" x:Name="SendReplyButton"/>
+                            </Grid>
+                            <TextBlock x:Name="ReplyHintText" Margin="2,8,0,0" FontSize="12"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="SendErrorText" Margin="2,4,0,0" FontSize="12" FontWeight="SemiBold"
+                                       Foreground="#EF4444" TextWrapping="Wrap" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock x:Name="EmptyChatHint" Grid.Row="2"
+                               Text="Клиенты появятся здесь после первого сообщения боту в MAX."
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"
+                               TextAlignment="Center" MaxWidth="360" Margin="24"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

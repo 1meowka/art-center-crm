@@ -1,0 +1,68 @@
+<Window x:Class="VKR.Views.InstitutionGeographyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="География обучающихся — Арт-студия"
+        WindowState="Maximized" WindowStyle="None"
+        Background="{DynamicResource ThemeBgBrush}" FontFamily="Segoe UI">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="{DynamicResource ThemeHeaderBrush}" Padding="28,16"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="АНАЛИТИКА" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                    <TextBlock Text="География: школы и детские сады" FontSize="22" FontWeight="ExtraBold"/>
+                </StackPanel>
+                <Button Content="← Назад" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Style="{StaticResource SectionHeaderButtonStyle}" Click="Back_Click"/>
+            </Grid>
+        </Border>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="28,24,28,32">
+                <TextBlock Text="Откуда приходят дети" FontSize="32" FontWeight="ExtraBold" Margin="0,0,0,8"/>
+                <TextBlock Text="Статистика по учебным заведениям обучающихся — школы, детские сады и другие."
+                           FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,20"/>
+
+                <UniformGrid Columns="3" Margin="0,0,0,20">
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" Margin="0,0,8,0"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Детские сады" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="PreschoolCountText" Text="0" FontSize="28" FontWeight="ExtraBold" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" Margin="4,0"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Школы" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="SchoolCountText" Text="0" FontSize="28" FontWeight="ExtraBold" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20" Margin="8,0,0,0"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Всего обучающихся" Foreground="{DynamicResource ThemeTextMutedBrush}" FontSize="13"/>
+                            <TextBlock x:Name="TotalCountText" Text="0" FontSize="28" FontWeight="ExtraBold" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="8"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                    <DataGrid x:Name="RowsGrid" Style="{StaticResource ModernDataGridStyle}" IsReadOnly="True"
+                              AutoGenerateColumns="False" MinHeight="360">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="КАТЕГОРИЯ" Binding="{Binding CategoryLabel}" Width="160"/>
+                            <DataGridTextColumn Header="УЧЕБНОЕ ЗАВЕДЕНИЕ" Binding="{Binding PlaceLabel}" Width="2*"/>
+                            <DataGridTextColumn Header="ОБУЧАЮЩИХСЯ" Binding="{Binding StudentCount}" Width="140"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

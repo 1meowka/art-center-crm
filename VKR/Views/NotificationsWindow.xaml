@@ -1,0 +1,218 @@
+<Window x:Class="VKR.Views.NotificationsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Уведомления — Арт-студия"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource SectionHeaderButtonStyle}"/>
+        <Style x:Key="NotificationCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="24"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,16,16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{DynamicResource ThemeCardShadowEffect}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="28,16,28,16">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/logo.png" Width="44" Height="44" Margin="0,0,14,0"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ТЕКУЩИЙ РАЗДЕЛ" FontSize="11"
+                                   FontWeight="Black" Foreground="{DynamicResource ThemeTextSubtleBrush}"/>
+                        <TextBlock Text="Уведомления" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="← Назад" Style="{StaticResource HeaderButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="28,24,28,28">
+                <StackPanel Margin="0,0,0,28">
+                    <TextBlock Text="Напоминания администратору" FontSize="32"
+                               FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                    <TextBlock Text="Выберите тип уведомления. Напоминания (кроме именинников) можно отложить."
+                               FontSize="14" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <UniformGrid Columns="2" HorizontalAlignment="Stretch">
+                    <!-- Именинники -->
+                    <Border x:Name="BirthdaysCard" Style="{StaticResource NotificationCardStyle}"
+                            MouseLeftButtonUp="BirthdaysCard_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="56" Height="56" CornerRadius="16"
+                                    Background="{DynamicResource ThemeWarningBgBrush}" VerticalAlignment="Top">
+                                <TextBlock Text="🎂" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="16,0,12,0">
+                                <TextBlock Text="Именинники" FontSize="20" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Поздравить обучающихся с днём рождения сегодня"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           TextWrapping="Wrap" Margin="0,6,0,0"/>
+                            </StackPanel>
+                            <Border Grid.Column="2" MinWidth="36" Height="36" CornerRadius="18"
+                                    Background="{DynamicResource ThemeWarningBgBrush}" VerticalAlignment="Top">
+                                <TextBlock x:Name="BirthdaysBadgeText" Text="0"
+                                           Foreground="{DynamicResource ThemeWarningFgBrush}"
+                                           FontWeight="Black" FontSize="14"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Обратная связь по занятиям -->
+                    <Border x:Name="SatisfactionCard" Style="{StaticResource NotificationCardStyle}"
+                            MouseLeftButtonUp="SatisfactionCard_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="56" Height="56" CornerRadius="16"
+                                    Background="{DynamicResource ThemeInfoBgBrush}" VerticalAlignment="Top">
+                                <TextBlock Text="📋" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="16,0,12,0">
+                                <TextBlock Text="Обратная связь по занятиям" FontSize="20" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Ежемесячно узнать, нравится ли ребёнку заниматься, и зафиксировать результат"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           TextWrapping="Wrap" Margin="0,6,0,0"/>
+                            </StackPanel>
+                            <Border Grid.Column="2" MinWidth="36" Height="36" CornerRadius="18"
+                                    Background="{DynamicResource ThemeInfoBgBrush}" VerticalAlignment="Top">
+                                <TextBlock x:Name="SatisfactionBadgeText" Text="0"
+                                           Foreground="{DynamicResource ThemeInfoFgBrush}"
+                                           FontWeight="Black" FontSize="14"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Продление договоров -->
+                    <Border x:Name="RenewalCard" Style="{StaticResource NotificationCardStyle}"
+                            MouseLeftButtonUp="RenewalCard_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="56" Height="56" CornerRadius="16"
+                                    Background="{DynamicResource ThemeDangerBgBrush}" VerticalAlignment="Top">
+                                <TextBlock Text="📄" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="16,0,12,0">
+                                <TextBlock Text="Продление договоров" FontSize="20" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="За 7 дней до окончания — узнать, продлят ли договор"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           TextWrapping="Wrap" Margin="0,6,0,0"/>
+                            </StackPanel>
+                            <Border Grid.Column="2" MinWidth="36" Height="36" CornerRadius="18"
+                                    Background="{DynamicResource ThemeDangerBgBrush}" VerticalAlignment="Top">
+                                <TextBlock x:Name="RenewalBadgeText" Text="0"
+                                           Foreground="{DynamicResource ThemeDangerFgBrush}"
+                                           FontWeight="Black" FontSize="14"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- После пробного занятия -->
+                    <Border x:Name="TrialFollowupCard" Style="{StaticResource NotificationCardStyle}"
+                            MouseLeftButtonUp="TrialFollowupCard_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="56" Height="56" CornerRadius="16"
+                                    Background="{DynamicResource ThemeSuccessBgBrush}" VerticalAlignment="Top">
+                                <TextBlock Text="🎯" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="16,0,12,0">
+                                <TextBlock Text="После пробного занятия" FontSize="20" FontWeight="ExtraBold"
+                                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                                <TextBlock Text="Узнать мнение после пробного — сначала звонок родителю, при необходимости ребёнку"
+                                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                           TextWrapping="Wrap" Margin="0,6,0,0"/>
+                            </StackPanel>
+                            <Border Grid.Column="2" MinWidth="36" Height="36" CornerRadius="18"
+                                    Background="{DynamicResource ThemeSuccessBgBrush}" VerticalAlignment="Top">
+                                <TextBlock x:Name="TrialFollowupBadgeText" Text="0"
+                                           Foreground="{DynamicResource ThemeSuccessFgBrush}"
+                                           FontWeight="Black" FontSize="14"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </UniformGrid>
+
+                <!-- Статистика -->
+                <Border x:Name="StatsCard" Style="{StaticResource NotificationCardStyle}" Margin="0,0,16,0"
+                        MouseLeftButtonUp="StatsCard_Click">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Width="56" Height="56" CornerRadius="16"
+                                Background="{DynamicResource ThemeAccentVioletBrush}" VerticalAlignment="Top">
+                            <TextBlock Text="📊" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                            <TextBlock Text="Статистика и история" FontSize="20" FontWeight="ExtraBold"
+                                       Foreground="{DynamicResource ThemeTextBrush}"/>
+                            <TextBlock Text="Сколько опросов провели, кто продлил договор, полная история за период"
+                                       FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                       TextWrapping="Wrap" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="16"
+                        Padding="16,12" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                        Margin="0,8,16,0">
+                    <TextBlock Text="Именинники отложить нельзя — только поздравить в день рождения. Остальные напоминания можно отложить на завтра, 3 дня, неделю или выбранную дату."
+                               FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}" TextWrapping="Wrap"/>
+                </Border>
+
+                <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                        Padding="14,10" Margin="0,16,16,0" Visibility="Collapsed">
+                    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                               FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

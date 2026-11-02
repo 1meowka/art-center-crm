@@ -1,0 +1,103 @@
+<UserControl x:Class="VKR.Views.PaymentVedomostControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock Text="Ведомость" FontSize="28" FontWeight="ExtraBold"
+                           Foreground="{DynamicResource ThemeTextBrush}"/>
+                <TextBlock Text="Оплаты по дате. Новая оплата открывается в отдельном окне."
+                           FontSize="13" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,2,0,0"/>
+            </StackPanel>
+            <Button x:Name="ToggleEditorButton" Content="➕  Новая оплата"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Padding="14,8" FontWeight="Bold" Cursor="Hand"
+                    Background="{DynamicResource ThemePrimaryBrush}"
+                    Foreground="{DynamicResource ThemeOnPrimaryBrush}"
+                    BorderThickness="0" Click="ToggleEditor_Click"/>
+        </Grid>
+
+        <Border x:Name="FilterBar" Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="16"
+                Padding="14" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="ФИЛИАЛ" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="BranchCombo" DisplayMemberPath="ShortName"
+                              SelectionChanged="Filter_Changed"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="МЕСЯЦ" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="MonthCombo" DisplayMemberPath="Name" SelectedValuePath="Id"
+                              SelectionChanged="Filter_Changed"/>
+                </StackPanel>
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="УЧЕБНЫЙ ГОД" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="YearCombo" DisplayMemberPath="Name" SelectedValuePath="Id"
+                              SelectionChanged="Filter_Changed"/>
+                </StackPanel>
+                <StackPanel Grid.Column="6">
+                    <TextBlock Text="ПОИСК: ПЛАТЕЛЬЩИК, ДАТА, ПРЕПОДАВАТЕЛЬ" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                    <TextBox x:Name="SearchBox" Height="32" Padding="10,0" VerticalContentAlignment="Center"
+                             TextChanged="SearchBox_TextChanged"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border x:Name="GridHost" Grid.Row="2" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="16"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" ClipToBounds="True">
+            <DockPanel>
+                <Border DockPanel.Dock="Top" Padding="16,10"
+                        BorderBrush="{DynamicResource ThemeGridLineBrush}" BorderThickness="0,0,0,1">
+                    <TextBlock x:Name="CountText" FontWeight="SemiBold"
+                               Foreground="{DynamicResource ThemeTextMutedBrush}"/>
+                </Border>
+                <DataGrid x:Name="PaymentsGrid"
+                          Style="{StaticResource ModernDataGridStyle}"
+                          AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                          CanUserSortColumns="True"
+                          HeadersVisibility="Column" GridLinesVisibility="None"
+                          FontSize="{DynamicResource AppFontSizeGrid}"
+                          RowHeight="26" ColumnHeaderHeight="26"
+                          VerticalScrollBarVisibility="Visible"
+                          HorizontalScrollBarVisibility="Auto"
+                          MouseDoubleClick="PaymentsGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ДАТА" Binding="{Binding PaymentDateText}"
+                                            SortMemberPath="PaymentDate" Width="90"/>
+                        <DataGridTextColumn Header="ФАКТ. ДАТА" Binding="{Binding ActualDateText}" Width="90"/>
+                        <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding StudentFullNameText}"
+                                            SortMemberPath="StudentFullName" Width="2*"/>
+                        <DataGridTextColumn Header="ПРИЗНАК" Binding="{Binding PaymentKindText}" Width="140"/>
+                        <DataGridTextColumn Header="ДОГОВОР" Binding="{Binding ContractNumberText}" Width="90"/>
+                        <DataGridTextColumn Header="КУРС / СОБЫТИЕ" Binding="{Binding CourseText}" Width="2*"/>
+                        <DataGridTextColumn Header="ПЕРИОД" Binding="{Binding PeriodText}" Width="110"/>
+                        <DataGridTextColumn Header="СУММА" Binding="{Binding AmountText}"
+                                            SortMemberPath="Amount" Width="100"/>
+                        <DataGridTextColumn Header="МЕНЕДЖЕР" Binding="{Binding ManagerNameText}" Width="140"/>
+                        <DataGridTextColumn Header="ТИП ОПЛАТЫ" Binding="{Binding PaymentMethodName}" Width="110"/>
+                        <DataGridTextColumn Header="ПРИМЕЧАНИЕ" Binding="{Binding Comment}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

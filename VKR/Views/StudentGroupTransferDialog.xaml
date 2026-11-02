@@ -1,0 +1,173 @@
+<Window x:Class="VKR.Views.StudentGroupTransferDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Перевод в другую группу"
+        Width="560" Height="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource ThemeBgBrush}"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="FieldValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBrush}" CornerRadius="20" Padding="20"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock x:Name="HeaderTitleText" Text="Перевод в другую группу" FontSize="20"
+                           FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                <TextBlock x:Name="HeaderHintText"
+                           Text="Текущая запись закроется датой перевода, новая откроется с этой же даты"
+                           FontSize="12" Foreground="{DynamicResource ThemeTextMutedBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Поля -->
+        <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Padding="20"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+            <StackPanel>
+                <Grid Margin="0,0,0,14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="ОБУЧАЮЩИЙСЯ" Style="{StaticResource FieldLabelStyle}"/>
+                        <TextBlock x:Name="StudentNameText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="ТЕКУЩАЯ ГРУППА" Style="{StaticResource FieldLabelStyle}"/>
+                        <TextBlock x:Name="CurrentGroupText" Style="{StaticResource FieldValueStyle}"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Margin="0,0,0,14">
+                    <TextBlock x:Name="DateLabelText" Text="ДАТА ПЕРЕВОДА" Style="{StaticResource FieldLabelStyle}"/>
+                    <DatePicker x:Name="TransferDatePicker" Height="38" FontSize="13"
+                                VerticalContentAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,14">
+                    <TextBlock Text="НАПРАВЛЕНИЕ" Style="{StaticResource FieldLabelStyle}"/>
+                    <ComboBox x:Name="DirectionCombo"
+                              Style="{StaticResource RoundedComboBoxStyle}"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="Id"
+                              SelectionChanged="DirectionFilterChanged"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,14">
+                    <CheckBox x:Name="FilterByAgeCheck"
+                              Content="Только группы по возрасту обучающегося"
+                              FontSize="13" Foreground="{DynamicResource ThemeTextBrush}"
+                              IsChecked="True"
+                              Checked="DirectionFilterChanged"
+                              Unchecked="DirectionFilterChanged"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,14">
+                    <TextBlock Text="ЦЕЛЕВАЯ ГРУППА" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBlock x:Name="GroupsHintText"
+                               Text="В списке — направление, возраст (с … до … лет), преподаватель и состав группы"
+                               FontSize="11" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                               TextWrapping="Wrap" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="TargetGroupCombo"
+                              Style="{StaticResource RoundedComboBoxStyle}"
+                              DisplayMemberPath="DisplayName"
+                              SelectedValuePath="IdGroup"/>
+                </StackPanel>
+
+                <Border x:Name="ErrorBorder" Background="#FF6B6B" CornerRadius="12"
+                        Padding="14,10" Margin="0,8,0,0" Visibility="Collapsed">
+                    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                               FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Margin="0,12,0,0">
+            <Button Content="Отмена" Style="{StaticResource HeaderButtonStyle}"
+                    Click="Cancel_Click"/>
+            <Button x:Name="SaveButton" Content="Перевести" Style="{StaticResource PrimaryButtonStyle}"
+                    Click="Save_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

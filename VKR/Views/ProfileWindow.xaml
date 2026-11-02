@@ -1,0 +1,188 @@
+<Window x:Class="VKR.Views.ProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Мой профиль"
+        Width="620" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None" ResizeMode="NoResize"
+        Background="Transparent" AllowsTransparency="True"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="InputBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeHoverSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinHeight" Value="42"/>
+            <Setter Property="Padding" Value="12,10"/>
+        </Style>
+
+        <Style x:Key="InputLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="DialogButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Margin="12"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="40"
+                              ShadowDepth="12" Opacity="0.25"/>
+        </Border.Effect>
+        <StackPanel Margin="32">
+            <Grid Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="56" Height="56" CornerRadius="18"
+                            Background="{DynamicResource ThemePrimaryBrush}" Margin="0,0,16,0">
+                        <TextBlock x:Name="InitialsText" Text="??" FontSize="18" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeOnPrimaryBrush}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="FullNameText" Text="Пользователь" FontSize="22"
+                                   FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"/>
+                        <Border Background="{DynamicResource ThemeHoverSurfaceBrush}"
+                                CornerRadius="999" Padding="10,4" HorizontalAlignment="Left" Margin="0,6,0,0">
+                            <TextBlock x:Name="RoleText" Text="Роль"
+                                       FontSize="11" FontWeight="Black" Foreground="#7C3AED"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="✕" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Width="32" Height="32" Background="{DynamicResource ThemeBgBrush}"
+                        Foreground="{DynamicResource ThemeTextMutedBrush}" BorderThickness="0" Cursor="Hand"
+                        Click="Close_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="#E2E8F0"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+            <Grid Margin="0,0,0,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="ЛОГИН" Style="{StaticResource InputLabelStyle}"/>
+                    <Border Style="{StaticResource InputBorderStyle}">
+                        <TextBlock x:Name="LoginText" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="EMAIL" Style="{StaticResource InputLabelStyle}"/>
+                    <Border Style="{StaticResource InputBorderStyle}">
+                        <TextBlock x:Name="EmailText" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Margin="0,0,0,14">
+                <TextBlock Text="ПОСЛЕДНИЙ ВХОД" Style="{StaticResource InputLabelStyle}"/>
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <TextBlock x:Name="LastLoginText" Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold"/>
+                </Border>
+            </StackPanel>
+
+            <Border x:Name="TeacherLinkPanel" Background="{DynamicResource ThemeHoverSurfaceBrush}"
+                    CornerRadius="16" Padding="16" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                    BorderThickness="1" Margin="0,0,0,14" Visibility="Collapsed">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="КАРТОЧКА ПРЕПОДАВАТЕЛЯ" FontSize="11" FontWeight="Black"
+                                   Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,6"/>
+                        <TextBlock x:Name="TeacherNameText" FontSize="15" FontWeight="ExtraBold"
+                                   Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,10"/>
+                        <TextBlock x:Name="TeacherHintText" Text="К учётной записи не привязана карточка преподавателя."
+                                   TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                   FontSize="12" FontWeight="SemiBold" Visibility="Collapsed"/>
+                    </StackPanel>
+                    <Button x:Name="OpenTeacherButton" Content="Открыть карточку"
+                            Style="{StaticResource DialogButtonStyle}"
+                            Background="{DynamicResource ThemePrimaryBrush}"
+                            Foreground="{DynamicResource ThemeOnPrimaryBrush}"
+                            Width="170" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="OpenTeacherButton_Click" Visibility="Collapsed">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border x:Name="PasswordInfoPanel" Background="{DynamicResource ThemeHoverSurfaceBrush}" CornerRadius="16"
+                    Padding="16" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="ПАРОЛЬ" FontSize="11" FontWeight="Black"
+                               Foreground="{DynamicResource ThemeTextSubtleBrush}" Margin="0,0,0,8"/>
+                    <TextBlock Text="Пароль выдаёт и меняет только руководитель в разделе «Администрирование». Если забыли пароль — обратитесь к руководителю."
+                               TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextMutedBrush}"
+                               FontSize="12" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="ErrorBorder" Background="{DynamicResource ThemeDangerBgBrush}" CornerRadius="12"
+                    Padding="14,10" Margin="0,14,0,0" Visibility="Collapsed">
+                <TextBlock x:Name="ErrorText" Foreground="{DynamicResource ThemeDangerFgBrush}"
+                           FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+            </Border>
+
+            <Border x:Name="SuccessBorder" Background="#DCFCE7" CornerRadius="12"
+                    Padding="14,10" Margin="0,14,0,0" Visibility="Collapsed">
+                <TextBlock x:Name="SuccessText" Foreground="#166534"
+                           FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+            </Border>
+
+            <Button Content="Закрыть" Width="120" HorizontalAlignment="Right" Margin="0,20,0,0"
+                    Style="{StaticResource DialogButtonStyle}"
+                    Background="{DynamicResource ThemePrimaryBrush}"
+                    Foreground="{DynamicResource ThemeOnPrimaryBrush}"
+                    Click="Close_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Border>
+</Window>

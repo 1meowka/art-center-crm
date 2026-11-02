@@ -1,0 +1,272 @@
+<Window x:Class="VKR.Views.PlanEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Редактировать план KPI"
+        Width="600" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None" ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="InputBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="36"/>
+        </Style>
+
+        <Style x:Key="InputLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="DialogPrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemePrimaryHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DialogSecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBgBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="20" Margin="12"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="{DynamicResource ThemeShadowColor}" BlurRadius="40"
+                              ShadowDepth="12" Opacity="0.25"/>
+        </Border.Effect>
+
+        <DockPanel Margin="24">
+            <Button DockPanel.Dock="Right" Content="❌"
+                    Background="Transparent"
+                    Foreground="{DynamicResource ThemeTextMutedBrush}"
+                    BorderThickness="0"
+                    FontSize="16"
+                    Cursor="Hand"
+                    Click="CloseButton_Click"
+                    Padding="2"
+                    HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+            <TextBlock DockPanel.Dock="Top"
+                       Text="Редактировать план KPI"
+                       FontSize="16" FontWeight="ExtraBold" Foreground="{DynamicResource ThemeTextBrush}"
+                       Margin="0,0,0,16"/>
+
+            <StackPanel DockPanel.Dock="Top">
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Style="{StaticResource InputLabelStyle}" Text="Название плана"/>
+                    <Border Style="{StaticResource InputBorderStyle}">
+                        <TextBox x:Name="PlanNameInput"
+                                 BorderThickness="0"
+                                 Padding="8,6"
+                                 Background="Transparent"
+                                 Foreground="{DynamicResource ThemeTextBrush}"
+                                 VerticalContentAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="Дата начала"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <DatePicker x:Name="StartDateInput"
+                                        BorderThickness="0"
+                                        Padding="8,6"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource ThemeTextBrush}"
+                                        SelectedDateFormat="Short"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="Дата окончания"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <DatePicker x:Name="EndDateInput"
+                                        BorderThickness="0"
+                                        Padding="8,6"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource ThemeTextBrush}"
+                                        SelectedDateFormat="Short"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="Плановые показатели"
+                           FontSize="12" FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}"
+                           Margin="0,8,0,12"/>
+
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="План заявок"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <TextBox x:Name="PlannedLeadsInput"
+                                     BorderThickness="0"
+                                     Padding="8,6"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource ThemeTextBrush}"
+                                     VerticalContentAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="План новых обучающихся"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <TextBox x:Name="PlannedStudentsInput"
+                                     BorderThickness="0"
+                                     Padding="8,6"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource ThemeTextBrush}"
+                                     VerticalContentAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="План договоров"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <TextBox x:Name="PlannedContractsInput"
+                                     BorderThickness="0"
+                                     Padding="8,6"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource ThemeTextBrush}"
+                                     VerticalContentAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="План выручки"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <TextBox x:Name="PlannedRevenueInput"
+                                     BorderThickness="0"
+                                     Padding="8,6"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource ThemeTextBrush}"
+                                     VerticalContentAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="План посещаемости %"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <TextBox x:Name="PlannedAttendanceInput"
+                                     BorderThickness="0"
+                                     Padding="8,6"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource ThemeTextBrush}"
+                                     VerticalContentAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                        <TextBlock Style="{StaticResource InputLabelStyle}" Text="Максимум оттока"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <TextBox x:Name="PlannedMaxChurnInput"
+                                     BorderThickness="0"
+                                     Padding="8,6"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource ThemeTextBrush}"
+                                     VerticalContentAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock x:Name="ErrorText"
+                           Foreground="#EF4444"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Margin="0,12,0,0"/>
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Bottom"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,16,0,0">
+                <Button Content="Отмена"
+                        Style="{StaticResource DialogSecondaryButtonStyle}"
+                        Click="CancelButton_Click"/>
+                <Button Content="Сохранить"
+                        Style="{StaticResource DialogPrimaryButtonStyle}"
+                        Click="SaveButton_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</Window>
